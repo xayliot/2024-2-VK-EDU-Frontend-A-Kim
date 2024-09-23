@@ -10,9 +10,9 @@
 import convertBytesToHuman from './convertBytesToHuman';
 
 test('Возвращает false для неправильного типа данных', () => {
-  expect(convertBytesToHuman('12.21.12')).toBe("false")
-  expect(convertBytesToHuman('hello')).toBe("false")
-  expect(convertBytesToHuman('12b2')).toBe("false")
+  expect(convertBytesToHuman('12.21.12')).toBe(false)
+  expect(convertBytesToHuman('hello')).toBe(false)
+  expect(convertBytesToHuman('12b2')).toBe(false)
 });
 
 test('Возвращает корректное значение для чисел', () => {
@@ -23,6 +23,6 @@ test('Возвращает корректное значение для чисе
 });
 
 test('Возвращает false для правильного типа данных', () => {
-  expect(convertBytesToHuman(1-2)).toBe('false')
-  expect(convertBytesToHuman(-1)).toBe('false')
+  expect(convertBytesToHuman(1-2)).toBe(false)
+  expect(convertBytesToHuman(-1)).toBe(false)
 });

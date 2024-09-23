@@ -20,7 +20,7 @@
 export default function convertBytesToHuman(bytes) {
   const size = ['B', 'KB', 'MB', 'GB','TB']
   if (typeof bytes !== 'number' || bytes < 0){
-    return "false"
+    return false
   } else {
     let i = 0
     while (bytes >= 1024){

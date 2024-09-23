@@ -25,16 +25,6 @@ nonUniqueElements([10, 9, 10, 10, 9, 8]) == [10, 9, 10, 10, 9]
  */
 
 export default function nonUniqueElements(data) {
-  let count = {}
-  let nonUniq = []
-  for (let num of data) {
-    count[num] = count[num] ? count[num] + 1 : 1;
-  }
-  
-  for (let num of data) {
-    if (count[num] > 1){
-      nonUniq.push(num)
-    }
-  }
-  return nonUniq
+  return data.filter((num) => data.indexOf(num) !== data.lastIndexOf(num));
 }
+

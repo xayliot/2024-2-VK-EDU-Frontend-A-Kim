@@ -19,7 +19,7 @@
 
 export default function convertBytesToHuman(bytes) {
   const size = ['B', 'KB', 'MB', 'GB','TB']
-  if (typeof bytes !== 'number' || bytes < 0 || bytes === Infinity || isNaN(bytes)){
+  if (typeof bytes !== 'number' || bytes < 0 || !isFinite(bytes) || isNaN(bytes)){
     return false
   }
   let i = 0

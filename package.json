@@ -1,0 +1,33 @@
+{
+  "name": "2024-2-vk-edu-frontend-a-kim",
+  "version": "1.0.0",
+  "description": "учебный проект",
+  "main": "convertBytesToHuman.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xayliot/2024-2-VK-EDU-Frontend-A-Kim.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xayliot/2024-2-VK-EDU-Frontend-A-Kim/issues"
+  },
+  "homepage": "https://github.com/xayliot/2024-2-VK-EDU-Frontend-A-Kim#readme",
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
+  }
+}

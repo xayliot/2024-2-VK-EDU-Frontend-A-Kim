@@ -86,14 +86,26 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./index.css":
+/*!*******************!*\
+  !*** ./index.css ***!
+  \*******************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./index.css?");
+
+/***/ }),
+
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
   \******************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("var form = document.querySelector('form');\nvar input = document.querySelector('.form-input');\nvar messageDiv = document.querySelector('.messages');\nvar name = 'user';\nform.addEventListener('submit', this.handleSubmit.bind(this));\nform.addEventListener('keypress', this.handleKeyPress.bind(this));\nfunction handleSubmit(event) {\n  event.preventDefault();\n  var messageText = input.value.trim();\n  //localStorage.clear();\n  if (messageText) {\n    var message = {\n      text: messageText,\n      sender: name,\n      time: new Date().toString()\n    };\n    saveMessagesToLocalstorage(message);\n    input.value = '';\n    displayMessages();\n    scrollToBottom();\n  }\n}\nfunction handleKeyPress(event) {\n  if (event.keyCode === 13) {\n    form.dispatchEvent(new Event('submit'));\n  }\n}\nfunction saveMessagesToLocalstorage(message) {\n  var messages = getMessagesFromLocalstorage();\n  messages.push(message);\n  localStorage.setItem('messages', JSON.stringify(messages));\n}\nfunction getMessagesFromLocalstorage() {\n  var storedMessages = localStorage.getItem('messages');\n  return storedMessages ? JSON.parse(storedMessages) : [];\n}\nfunction displayMessages() {\n  var messages = getMessagesFromLocalstorage();\n  if (messages.length === 0) {\n    return;\n  }\n  var existingMessages = messageDiv.querySelectorAll('.message-item');\n  if (existingMessages.length < messages.length) {\n    var newMessages = messages.slice(existingMessages.length);\n    newMessages.forEach(function (message) {\n      var messageElement = document.createElement('div');\n      messageElement.classList.add('message-item');\n      messageElement.innerHTML = \"\\n                <strong>\".concat(message.sender, \"</strong> <em>(\").concat(new Date(message.time).toLocaleString(), \")</em><br>\\n                \").concat(message.text, \"\\n            \");\n      messageDiv.appendChild(messageElement);\n    });\n  }\n}\nfunction scrollToBottom() {\n  messageDiv.scrollTop = messageDiv.scrollHeight;\n}\n\n//# sourceURL=webpack:///./index.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n\nvar form = document.querySelector('form');\nvar input = document.querySelector('.form-input');\nvar messageDiv = document.querySelector('.messages');\nvar name = 'user';\nform.addEventListener('submit', undefined.handleSubmit.bind(undefined));\nform.addEventListener('keypress', undefined.handleKeyPress.bind(undefined));\nfunction handleSubmit(event) {\n  event.preventDefault();\n  var messageText = input.value.trim();\n  //localStorage.clear();\n  if (messageText) {\n    var message = {\n      text: messageText,\n      sender: name,\n      time: new Date().toString()\n    };\n    saveMessagesToLocalstorage(message);\n    input.value = '';\n    displayMessages();\n    scrollToBottom();\n  }\n}\nfunction handleKeyPress(event) {\n  if (event.keyCode === 13) {\n    form.dispatchEvent(new Event('submit'));\n  }\n}\nfunction saveMessagesToLocalstorage(message) {\n  var messages = getMessagesFromLocalstorage();\n  messages.push(message);\n  localStorage.setItem('messages', JSON.stringify(messages));\n}\nfunction getMessagesFromLocalstorage() {\n  var storedMessages = localStorage.getItem('messages');\n  return storedMessages ? JSON.parse(storedMessages) : [];\n}\nfunction displayMessages() {\n  var messages = getMessagesFromLocalstorage();\n  if (messages.length === 0) {\n    return;\n  }\n  var existingMessages = messageDiv.querySelectorAll('.message-item');\n  if (existingMessages.length < messages.length) {\n    var newMessages = messages.slice(existingMessages.length);\n    newMessages.forEach(function (message) {\n      var messageElement = document.createElement('div');\n      messageElement.classList.add('message-item');\n      messageElement.innerHTML = \"\\n                <strong>\".concat(message.sender, \"</strong> <em>(\").concat(new Date(message.time).toLocaleString(), \")</em><br>\\n                \").concat(message.text, \"\\n            \");\n      messageDiv.appendChild(messageElement);\n    });\n  }\n}\nfunction scrollToBottom() {\n  messageDiv.scrollTop = messageDiv.scrollHeight;\n}\n\n//# sourceURL=webpack:///./index.js?");
 
 /***/ })
 

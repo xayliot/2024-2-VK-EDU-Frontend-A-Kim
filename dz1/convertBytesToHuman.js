@@ -19,15 +19,14 @@
 
 export default function convertBytesToHuman(bytes) {
   const size = ['B', 'KB', 'MB', 'GB','TB']
-  if (typeof bytes !== 'number' || bytes < 0){
+  if (typeof bytes !== 'number' || bytes < 0 || !isFinite(bytes) || isNaN(bytes)){
     return false
-  } else {
-    let i = 0
-    while (bytes >= 1024){
-      bytes = bytes / 1024
-      i++
-    }
-
-    return bytes.toFixed(2).replace(/\.00$/, '').replace(/0$/, '') + ' ' + size[i];
   }
+  let i = 0
+  while (bytes >= 1024){
+    bytes = bytes / 1024
+    i++
+  }
+    return bytes.toFixed(2).replace(/\.00$/, '').replace(/0$/, '') + ' ' + size[i];
+  
 }

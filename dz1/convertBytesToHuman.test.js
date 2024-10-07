@@ -13,6 +13,11 @@ test('Возвращает false для неправильного типа да
   expect(convertBytesToHuman('12.21.12')).toBe(false)
   expect(convertBytesToHuman('hello')).toBe(false)
   expect(convertBytesToHuman('12b2')).toBe(false)
+  expect(convertBytesToHuman()).toBe(false)
+  expect(convertBytesToHuman(Infinity)).toBe(false)
+  expect(convertBytesToHuman(NaN)).toBe(false)
+  expect(convertBytesToHuman(null)).toBe(false)
+  expect(convertBytesToHuman(-Infinity)).toBe(false)
 });
 
 test('Возвращает корректное значение для чисел', () => {
@@ -26,3 +31,4 @@ test('Возвращает false для правильного типа данн
   expect(convertBytesToHuman(1-2)).toBe(false)
   expect(convertBytesToHuman(-1)).toBe(false)
 });
+

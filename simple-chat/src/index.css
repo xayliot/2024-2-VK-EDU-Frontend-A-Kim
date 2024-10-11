@@ -1,3 +1,4 @@
+@import "/simple-chat/src/components/header/header.js";
 html {
     box-sizing: border-box;
 }

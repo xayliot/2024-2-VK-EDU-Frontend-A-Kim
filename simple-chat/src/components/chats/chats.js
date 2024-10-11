@@ -47,20 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addChatToUI(chatData) {
         const chatElement = document.createElement('div');
-        chatElement.classList.add('example-chat');
+        chatElement.classList.add('chat');
     
-        const participantName = chatData.participants && chatData.participants.length > 0 
-            ? chatData.participants[0] 
-            : 'Неизвестный участник'; 
+        const lastMessage = chatData.messages.length > 0 
+            ? chatData.messages[chatData.messages.length - 1].text 
+            : 'Нет сообщений'; 
     
         chatElement.innerHTML = `
-            <img src="${chatData.image}" alt="${participantName}" style="width: 50px; height: 50px;">
+        <div class="div-chat-img">
+            <img class="chat-img" src="${chatData.image}" alt="${chatData.name}">
+            </div>
             <div class="name-content">
                 <div class="name">${chatData.name}</div>
-                <div class="lasttext">${participantName}</div>
+                <div class="lasttext">${lastMessage}</div>
             </div>
         `;
- 
+    
         chatElement.addEventListener('click', () => {
             localStorage.setItem('chatId', chatData.id);
             window.location.href = `/simple-chat/src/index.html?id=${chatData.id}`;
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         chatsContainer.appendChild(chatElement);
     }
+    
     
     function clearModalInputs() {
         chatNameInput.value = '';
@@ -80,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (Object.keys(chats).length === 0) {
             console.log("Нет чатов"); 
-            chatsContainer.innerHTML = '<p>Нет чатов для отображения.</p>'; 
         } else {
             chatsContainer.innerHTML = '';
             Object.keys(chats).forEach(chatId => {

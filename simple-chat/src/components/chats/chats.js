@@ -1,3 +1,5 @@
+import './chats.css';
+
 document.addEventListener('DOMContentLoaded', () => {
     const createButton = document.querySelector('.div-create-button button');
     const chatModal = document.getElementById('chat-modal');
@@ -46,13 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addChatToUI(chatData) {
-        const chatElement = document.createElement('div');
+        const chatElement = document.createElement('a', href ='/index.html?id=${chatData.id)');
         chatElement.classList.add('chat');
-    
-        const lastMessage = chatData.messages.length > 0 
-            ? chatData.messages[chatData.messages.length - 1].text 
-            : 'Нет сообщений'; 
-    
+    //
+       // const lastMessage = chatData.messages.length > 0 
+       //     ? chatData.messages[chatData.messages.length - 1].text 
+       //     : 'Нет сообщений'; 
+    //
         chatElement.innerHTML = `
         <div class="div-chat-img">
             <img class="chat-img" src="${chatData.image}" alt="${chatData.name}">
@@ -63,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     
-        chatElement.addEventListener('click', () => {
-            localStorage.setItem('chatId', chatData.id);
-            window.location.href = `/simple-chat/src/index.html?id=${chatData.id}`;
-        });
+      //  chatElement.addEventListener('click', () => {
+      //      localStorage.setItem('chatId', chatData.id);
+      //      window.location.href = `/index.html?id=${chatData.id}`;
+      //  });
     
         chatsContainer.appendChild(chatElement);
     }

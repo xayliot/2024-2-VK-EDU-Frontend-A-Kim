@@ -1,4 +1,5 @@
 import './imports';
+
 const form = document.querySelector('form');
 const input = document.querySelector('.form-input');
 const messageDiv = document.querySelector('.messages');
@@ -7,7 +8,7 @@ const swapbtn = document.getElementById('change_user');
 let currentUser = 'me'; 
 let companion = '';
 const chatId = localStorage.getItem('chatId');
-console.log(chatId);
+
 
 const chats = getMessagesFromLocalStorage(); 
 if (chatId && chats[chatId]) {

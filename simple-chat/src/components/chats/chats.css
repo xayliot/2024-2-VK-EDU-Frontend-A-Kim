@@ -91,13 +91,21 @@ header {
     padding: 15px;
 }
 .chat {
-
+    text-decoration: none;
+    color: black;
     display: flex;
     justify-content: start;
     padding: 10px;
     height: calc(800px/8);
     align-items: center;
+    transition: transform 0.2s ease;
 }
+
+.chat:hover {
+ background-color: rgb(201, 198, 198);
+ transform: scale(1.05);
+}
+
 .name-content {
     width: 100%;
     border-bottom: solid grey 1px;

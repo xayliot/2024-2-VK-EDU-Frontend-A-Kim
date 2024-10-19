@@ -1,9 +1,10 @@
-import './imports';
+import './index.css';
 
 const form = document.querySelector('form');
 const input = document.querySelector('.form-input');
 const messageDiv = document.querySelector('.messages');
 const swapbtn = document.getElementById('change_user');
+const avatar = document.querySelector('ava-img');
 
 let currentUser = 'me'; 
 let companion = '';
@@ -70,7 +71,6 @@ function saveMessagesToLocalStorage(chatId, message) {
 
 function getMessagesFromLocalStorage() {
     const storedChats = localStorage.getItem('chats');
-    console.log('Сохраненные чаты:', storedChats); 
     return storedChats ? JSON.parse(storedChats) : {};
 }
 

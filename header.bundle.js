@@ -81,19 +81,31 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./components/header/header.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./index.js":
-/*!******************!*\
-  !*** ./index.js ***!
-  \******************/
+/***/ "./components/header/header.css":
+/*!**************************************!*\
+  !*** ./components/header/header.css ***!
+  \**************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("var form = document.querySelector('form');\nvar input = document.querySelector('.form-input');\nvar messageDiv = document.querySelector('.messages');\nvar swapbtn = document.getElementById('change_user');\nvar currentUser = 'user';\ndocument.querySelector('.username').textContent = currentUser;\nswapbtn.textContent = currentUser;\nvar chatId = localStorage.getItem('chatId');\nconsole.log(chatId);\nif (chatId) {\n  displayMessages(chatId);\n} else {\n  console.log(\"chatId не найден\");\n}\nform.addEventListener('submit', handleSubmit);\nswapbtn.addEventListener('click', swapUsers);\nfunction handleSubmit(event) {\n  event.preventDefault();\n  var messageText = input.value.trim();\n  if (messageText) {\n    var message = {\n      text: messageText,\n      sender: currentUser,\n      time: new Date().toISOString()\n    };\n    saveMessagesToLocalStorage(chatId, message);\n    input.value = '';\n    displayMessages(chatId);\n    scrollToBottom();\n  }\n}\nfunction swapUsers() {\n  currentUser = currentUser === 'user' ? 'user2' : 'user';\n  document.querySelector('.username').textContent = currentUser;\n  swapbtn.textContent = currentUser;\n}\nfunction saveMessagesToLocalStorage(chatId, message) {\n  var chats = getMessagesFromLocalStorage();\n  if (!chats[chatId]) {\n    chats[chatId] = {\n      id: chatId,\n      name: \"\\u0427\\u0430\\u0442 \".concat(chatId),\n      participants: ['user', 'user2'],\n      messages: []\n    };\n  }\n  chats[chatId].messages.push(message);\n  localStorage.setItem('chats', JSON.stringify(chats));\n}\nfunction getMessagesFromLocalStorage() {\n  var storedChats = localStorage.getItem('chats');\n  console.log('Сохраненные чаты:', storedChats);\n  return storedChats ? JSON.parse(storedChats) : {};\n}\nfunction displayMessages(chatId) {\n  var chats = getMessagesFromLocalStorage();\n  var messages = chats[chatId] ? chats[chatId].messages : [];\n  messageDiv.innerHTML = '';\n  if (messages.length === 0) {\n    return;\n  }\n  messages.forEach(function (message) {\n    var messageElement = document.createElement('div');\n    messageElement.classList.add('message-item', message.sender === 'user' ? 'user' : 'user2');\n    messageElement.innerHTML = \"\\n            <strong>\".concat(message.sender, \"</strong> <em>\").concat(new Date(message.time).toLocaleTimeString([], {\n      hour: '2-digit',\n      minute: '2-digit'\n    }), \"</em><br>\\n            \").concat(message.text, \"\\n        \");\n    messageDiv.appendChild(messageElement);\n  });\n  scrollToBottom();\n}\nfunction scrollToBottom() {\n  messageDiv.scrollTop = messageDiv.scrollHeight;\n}\n\n//# sourceURL=webpack:///./index.js?");
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./components/header/header.css?");
+
+/***/ }),
+
+/***/ "./components/header/header.js":
+/*!*************************************!*\
+  !*** ./components/header/header.js ***!
+  \*************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _header_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header.css */ \"./components/header/header.css\");\n/* harmony import */ var _header_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_header_css__WEBPACK_IMPORTED_MODULE_0__);\n\n\n//# sourceURL=webpack:///./components/header/header.js?");
 
 /***/ })
 

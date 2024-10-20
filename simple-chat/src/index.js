@@ -4,17 +4,18 @@ const form = document.querySelector('form');
 const input = document.querySelector('.form-input');
 const messageDiv = document.querySelector('.messages');
 const swapbtn = document.getElementById('change_user');
-const avatar = document.querySelector('ava-img');
+const avatar = document.querySelector('.ava-img');
 
 let currentUser = 'me'; 
 let companion = '';
 const chatId = localStorage.getItem('chatId');
-
-
 const chats = getMessagesFromLocalStorage(); 
+
+
 if (chatId && chats[chatId]) {
     companion = chats[chatId].participants.find(p => p !== currentUser) || 'Собеседник';
     document.querySelector('.username').textContent = companion; 
+    avatar.src = chats[chatId].image;
     displayMessages(chatId);
 } else {
     console.log("chatId не найден");

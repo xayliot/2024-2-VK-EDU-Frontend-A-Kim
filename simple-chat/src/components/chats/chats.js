@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     displayAllChats();
-    //localStorage.clear();
+
     createButton.addEventListener('click', () => {
         chatModal.style.display = 'block';
     });
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const chatElement = document.createElement('a');
         chatElement.setAttribute('href', `index.html?id=${chatData.id}`);
         chatElement.classList.add('chat');
-
+        localStorage.setItem('chatId', chatData.id);
         const lastMessage = chatData.messages.length > 0 
         ? chatData.messages[chatData.messages.length - 1].text 
         : 'Нет сообщений';

@@ -8,7 +8,10 @@ const avatar = document.querySelector('.ava-img');
 
 let currentUser = 'me'; 
 let companion = '';
-const chatId = localStorage.getItem('chatId');
+
+const currentUrl = window.location.href;
+const url = new URL(currentUrl);
+const chatId = url.searchParams.get('id'); 
 const chats = getMessagesFromLocalStorage(); 
 
 
@@ -90,7 +93,7 @@ function displayMessages(chatId) {
         messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
 
         messageElement.innerHTML = `
-            <strong>${message.sender}</strong> <em>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
+            <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
             ${message.text}
         `;
         messageDiv.appendChild(messageElement);

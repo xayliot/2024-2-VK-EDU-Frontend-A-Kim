@@ -39,7 +39,7 @@ function handleSubmit(event) {
 
         saveMessagesToLocalStorage(chatId, message);
         input.value = '';
-        displayMessages(chatId);
+        addNewMesage(message);
         scrollToBottom();
     }
 }
@@ -90,7 +90,7 @@ function displayMessages(chatId) {
         messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
 
         messageElement.innerHTML = `
-            <strong>${message.sender}</strong> <em>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
+            <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
             ${message.text}
         `;
         messageDiv.appendChild(messageElement);
@@ -101,4 +101,19 @@ function displayMessages(chatId) {
 
 function scrollToBottom() {
     messageDiv.scrollTop = messageDiv.scrollHeight;
+}
+
+function addNewMesage(message){
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
+    messageElement.classList.add('bounceIn');
+    messageElement.innerHTML = `
+        <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
+        ${message.text}
+    `;
+    messageElement.addEventListener('animationend', () => {
+        messageElement.classList.remove('bounceIn');
+    });
+
+    messageDiv.appendChild(messageElement);
 }

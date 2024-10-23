@@ -8,7 +8,9 @@ const avatar = document.querySelector('.ava-img');
 
 let currentUser = 'me'; 
 let companion = '';
-const chatId = localStorage.getItem('chatId');
+const currentUrl = window.location.href;
+const url = new URL(currentUrl);
+const chatId = url.searchParams.get('id'); 
 const chats = getMessagesFromLocalStorage(); 
 
 
@@ -45,7 +47,7 @@ function handleSubmit(event) {
 }
 
 function swapUsers() {
-    currentUser = currentUser === 'me' ? companion : 'me';
+    currentUser = currentUser === 'me' ?  'me' : companion ;
     updateHeader(); 
 }
 
@@ -87,7 +89,7 @@ function displayMessages(chatId) {
 
     messages.forEach((message) => {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
+        messageElement.classList.add('message-item', message.sender === 'me' ? 'user2' : 'user');
 
         messageElement.innerHTML = `
             <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>

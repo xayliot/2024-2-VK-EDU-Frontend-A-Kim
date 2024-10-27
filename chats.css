@@ -12,6 +12,7 @@ body {
     margin: 0;
     background-color: #fff;
     color: #333;
+    font-size: 2vw;
     font-family: Helvetica, Arial, sans-serif;
     line-height: 20px;
 }
@@ -38,8 +39,8 @@ header {
     background-color: #8E24AA; 
     border-bottom: 1px solid #ccc; 
     color: #fff;
-    height: 90px;
-    font-size: 35px;
+    height: 11vh;
+    font-size: xxx-large;
 }
 
 
@@ -88,7 +89,6 @@ header {
 .chats {
     margin-top: 11vh;
     padding: 15px;
-    overflow: hidden; 
 }
 .chat {
     text-decoration: none;
@@ -99,11 +99,10 @@ header {
     height: calc(800px/8);
     align-items: center;
     transition: transform 0.2s ease;
-    text-wrap: nowrap;
 }
 
 .chat:hover {
- background-color: rgb(224, 224, 224);
+ background-color: rgb(201, 198, 198);
  transform: scale(1.05);
 }
 
@@ -114,8 +113,6 @@ header {
 }
 .lasttext {
     margin-top: 10px;
-    max-width: 50%;
-    overflow: hidden;
 }
 
 .create-button {
@@ -125,15 +122,10 @@ header {
 }
 
 #add-button {
-    width: 80px;
+    width: 100px;
     border-radius: 50%;
     aspect-ratio: 1/1; 
-    font-size: 50px;
-}
-#add-button:hover {
-    background-color: rgb(247, 247, 187);
-    animation: pulse 2s infinite;
-    transform: scale(1.4);
+    font-size: 60px;
 }
 
 .modal {
@@ -155,19 +147,7 @@ header {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
 }
-
-#chat-image {
-    margin-bottom: 5px;
-}
-
-#chat-name {
-    margin-top: 5px;
-}
-
 
 .close {
     color: #aaa;
@@ -184,7 +164,10 @@ header {
 }
 
 .div-chat-img {
+    width: 100px; 
+    height: 100px;  
     min-width: 100px; 
+    min-height: 100px;
     overflow: hidden; 
     display: flex;
     align-items: center; 
@@ -202,31 +185,6 @@ header {
 
 .lasttext {
     opacity: 60%;
-    font-size: 15px;
+    font-size: x-large;
 }
 
-@-webkit-keyframes pulse {
-    0% {
-      -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
-    }
-    70% {
-        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-    }
-    100% {
-        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-    }
-  }
-  @keyframes pulse {
-    0% {
-      -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
-      box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
-    }
-    70% {
-        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-    }
-    100% {
-        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-    }
-  }

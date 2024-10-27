@@ -42,8 +42,6 @@ header {
     font-size: 35px;
 }
 
-
-
 .exit-button {
     background: none;
     border: none;
@@ -51,17 +49,11 @@ header {
     color: #fff;
 }
 
-
-
-
-
 .search-button, .options-button {
     margin-left: 15px; 
     cursor: pointer;
     font-size: 16px;
 }
-
-
 
 #loupe {
     right: 2vh;
@@ -73,6 +65,9 @@ header {
     color: #ffffff;
 }
 
+#loupe:hover {
+    animation: pulse 2s infinite;
+}
 
 #more_vert {
     right: 2vh;
@@ -83,6 +78,10 @@ header {
     font-size: 3.5vh;
     color: #ffffff;
     margin:0 0.7vh 0 1vh;
+}
+
+#more_vert:hover {
+    animation: pulse 2s infinite;
 }
 
 .chats {
@@ -129,11 +128,16 @@ header {
     border-radius: 50%;
     aspect-ratio: 1/1; 
     font-size: 50px;
+    border: none;
 }
 #add-button:hover {
-    background-color: rgb(247, 247, 187);
+    background-color: #8E24AA;
     animation: pulse 2s infinite;
-    transform: scale(1.4);
+    transform: scale(1.2);
+}
+
+.close {
+    width: fit-content;
 }
 
 .modal {

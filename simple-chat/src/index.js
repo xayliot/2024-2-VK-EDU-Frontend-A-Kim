@@ -47,7 +47,7 @@ function handleSubmit(event) {
 }
 
 function swapUsers() {
-    currentUser = currentUser === 'me' ?  'me' : companion ;
+    currentUser = currentUser === 'me' ?   companion : 'me'  ;
     updateHeader(); 
 }
 
@@ -107,7 +107,7 @@ function scrollToBottom() {
 
 function addNewMesage(message){
     const messageElement = document.createElement('div');
-    messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
+    messageElement.classList.add('message-item', message.sender === 'me' ? 'user2' : 'user');
     messageElement.classList.add('bounceIn');
     messageElement.innerHTML = `
         <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>

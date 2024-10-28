@@ -8,11 +8,11 @@ const avatar = document.querySelector('.ava-img');
 
 let currentUser = 'me'; 
 let companion = '';
+
 const currentUrl = window.location.href;
 const url = new URL(currentUrl);
 const chatId = url.searchParams.get('id'); 
 const chats = getMessagesFromLocalStorage(); 
-
 
 if (chatId && chats[chatId]) {
     companion = chats[chatId].participants.find(p => p !== currentUser) || 'Собеседник';
@@ -47,7 +47,7 @@ function handleSubmit(event) {
 }
 
 function swapUsers() {
-    currentUser = currentUser === 'me' ?   companion : 'me'  ;
+    currentUser = currentUser === 'me' ? companion : 'me';
     updateHeader(); 
 }
 

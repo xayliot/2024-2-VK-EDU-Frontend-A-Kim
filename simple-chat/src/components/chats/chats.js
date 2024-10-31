@@ -47,20 +47,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    function truncateText(text, limit) {
+        if (text.length > limit) {
+            return text.substring(0, limit) + '...'; 
+        }
+        return text;
+    }
+
     function addChatToUI(chatData) {
         const chatElement = document.createElement('a');
         chatElement.setAttribute('href', `index.html?id=${chatData.id}`);
         chatElement.classList.add('chat');
+        localStorage.setItem('chatId', chatData.id);
+        const maxLength = 25;
         const lastMessage = chatData.messages.length > 0 
         ? chatData.messages[chatData.messages.length - 1].text 
         : 'Нет сообщений';
+        const truncatedMessage = truncateText(lastMessage, maxLength);
         chatElement.innerHTML = `
         <div class="div-chat-img">
             <img class="chat-img" src="${chatData.image}" alt="${chatData.name}">
             </div>
             <div class="name-content">
                 <div class="name">${chatData.name}</div>
-                <div class="lasttext">${lastMessage}</div>
+                <div class="lasttext">${truncatedMessage}</div>
             </div>
         `;
         

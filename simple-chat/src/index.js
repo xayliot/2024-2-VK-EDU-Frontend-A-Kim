@@ -14,7 +14,6 @@ const url = new URL(currentUrl);
 const chatId = url.searchParams.get('id'); 
 const chats = getMessagesFromLocalStorage(); 
 
-
 if (chatId && chats[chatId]) {
     companion = chats[chatId].participants.find(p => p !== currentUser) || 'Собеседник';
     document.querySelector('.username').textContent = companion; 
@@ -42,7 +41,7 @@ function handleSubmit(event) {
 
         saveMessagesToLocalStorage(chatId, message);
         input.value = '';
-        displayMessages(chatId);
+        addNewMesage(message);
         scrollToBottom();
     }
 }
@@ -90,7 +89,7 @@ function displayMessages(chatId) {
 
     messages.forEach((message) => {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message-item', message.sender === 'me' ? 'user' : 'user2');
+        messageElement.classList.add('message-item', message.sender === 'me' ? 'user2' : 'user');
 
         messageElement.innerHTML = `
             <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
@@ -104,4 +103,19 @@ function displayMessages(chatId) {
 
 function scrollToBottom() {
     messageDiv.scrollTop = messageDiv.scrollHeight;
+}
+
+function addNewMesage(message){
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message-item', message.sender === 'me' ? 'user2' : 'user');
+    messageElement.classList.add('bounceIn');
+    messageElement.innerHTML = `
+        <strong>${message.sender}</strong> <em class='timestamp'>${new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</em><br>
+        ${message.text}
+    `;
+    messageElement.addEventListener('animationend', () => {
+        messageElement.classList.remove('bounceIn');
+    });
+
+    messageDiv.appendChild(messageElement);
 }

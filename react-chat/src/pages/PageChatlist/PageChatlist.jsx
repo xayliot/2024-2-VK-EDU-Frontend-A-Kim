@@ -3,7 +3,7 @@ import { ChatContext } from '../ChatContext';
 import ChatList from '../../components/ChatList';
 import ChatModal from '../../components/ChatModal';
 import CreateButton from '../../components/CreateButton';
-import './chats.css'; // Импортируем стили
+import './chats.css'; 
 
 const PageChatList = () => {
     const { chats, saveChatsToLocalStorage } = useContext(ChatContext);
@@ -27,17 +27,19 @@ const PageChatList = () => {
         
         const newChats = { ...chats, [chatId]: newChat };
         saveChatsToLocalStorage(newChats);
-        closeModal(); // Закрываем модальное окно после создания чата
+        closeModal();
     };
 
     return (
         <div className="page-chat-list">
-            <h1>Список чатов</h1>
             <ChatList 
                 chats={chats} 
                 onSelectChat={(id) => console.log(`Selected chat: ${id}`)} 
             />
-            <CreateButton onClick={openModal} />
+            <div className='create-button'>
+                <CreateButton onClick={openModal} />
+            </div>
+            
             {isModalOpen && (
                 <ChatModal onClose={closeModal} onCreateChat={createChat} />
             )}

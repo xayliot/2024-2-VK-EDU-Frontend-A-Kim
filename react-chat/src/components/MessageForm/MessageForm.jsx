@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './MessageForm.scss';
 const MessageForm = ({ onSendMessage }) => {
     const [messageText, setMessageText] = useState('');
 
@@ -18,7 +18,7 @@ const MessageForm = ({ onSendMessage }) => {
                 className="form-input"
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
-                placeholder="Введите сообщение..."
+                placeholder="Введите сообщение"
                 required
             />
             <button type="submit">Отправить</button>

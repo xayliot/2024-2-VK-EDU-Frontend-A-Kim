@@ -1,5 +1,6 @@
 import React from 'react';
-import ChatItem from './ChatItem';  
+import ChatItem from './ChatItem';
+import './ChatList.scss';  
 
 const ChatList = ({ chats, onSelectChat }) => {
     return (

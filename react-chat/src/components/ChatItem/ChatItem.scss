@@ -1,0 +1,28 @@
+.chat-item {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    height: calc(800px/8);
+    align-items: center;
+    transition: transform 0.2s ease;
+    text-wrap: nowrap;
+}
+
+.chat-item:hover {
+ background-color: rgb(224, 224, 224);
+ transform: scale(1.05);
+}
+
+.lasttext {
+    margin-top: 10px;
+    max-width: 50%;
+    overflow: hidden;
+}
+
+.name-content {
+    width: 100%;
+    border-bottom: solid grey 1px;
+    padding: 20px;
+}

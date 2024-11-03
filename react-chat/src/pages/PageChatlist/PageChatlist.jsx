@@ -1,13 +1,20 @@
-import React, { useContext, useState } from 'react';
-import { ChatContext } from '../ChatContext';
+import React, { useState, useEffect } from 'react';
 import ChatList from '../../components/ChatList';
 import ChatModal from '../../components/ChatModal';
 import CreateButton from '../../components/CreateButton';
-import './chats.css'; 
+import ChatListHeader from '../../components/ChatListHeader';
+//import './chats.scss';
 
 const PageChatList = () => {
-    const { chats, saveChatsToLocalStorage } = useContext(ChatContext);
+    const [chats, setChats] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {   
+        const storedChats = localStorage.getItem('chats');
+        if (storedChats) {
+            setChats(JSON.parse(storedChats));
+        }
+    }, []);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -24,14 +31,17 @@ const PageChatList = () => {
             ...chatData,
             messages: [],
         };
-        
+
         const newChats = { ...chats, [chatId]: newChat };
-        saveChatsToLocalStorage(newChats);
+
+        localStorage.setItem('chats', JSON.stringify(newChats));
+        setChats(newChats);
         closeModal();
     };
 
     return (
         <div className="page-chat-list">
+            <ChatListHeader/>
             <ChatList 
                 chats={chats} 
                 onSelectChat={(id) => console.log(`Selected chat: ${id}`)} 

@@ -3,7 +3,7 @@ import MessageList from '../../components/MessageList';
 import MessageForm from '../../components/MessageForm';
 import ChatHeader from '../../components/ChatHeader';
 
-const PageChat = ({ chatId }) => {
+const PageChat = ({ chatId, onBack }) => {
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState('me');

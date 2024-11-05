@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import ChatList from '../../components/ChatList';
-import ChatModal from '../../components/ChatModal';
-import CreateButton from '../../components/CreateButton';
-import ChatListHeader from '../../components/ChatListHeader';
-//import './chats.scss';
+import ChatList from '../../components/ChatList/index';
+import ChatModal from '../../components/ChatModal/index';
+import CreateButton from '../../components/CreateButton/index';
+import {ChatListHeader} from '../../components/Header/index'; 
+//import './chats.scss'; 
 
-const PageChatList = () => {
+const PageChatList = ({ onSelectChat }) => { 
     const [chats, setChats] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,10 +41,10 @@ const PageChatList = () => {
 
     return (
         <div className="page-chat-list">
-            <ChatListHeader/>
+            <ChatListHeader />
             <ChatList 
                 chats={chats} 
-                onSelectChat={(id) => console.log(`Selected chat: ${id}`)} 
+                onSelectChat={onSelectChat} 
             />
             <div className='create-button'>
                 <CreateButton onClick={openModal} />

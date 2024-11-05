@@ -1,5 +1,5 @@
 import React from 'react';
-import './ChatItem.scss';
+import './index.scss';
 
 const ChatItem = ({ chat, onSelectChat }) => {
     const lastMessage = chat.messages.length > 0 

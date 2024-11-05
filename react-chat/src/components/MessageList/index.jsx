@@ -1,5 +1,6 @@
 import React from 'react';
-import Message from '../Message';
+import Message from '../Message/index';
+import './index.scss';
 
 const MessageList = ({ messages }) => {
     return (

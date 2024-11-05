@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import MessageList from '../../components/MessageList';
-import MessageForm from '../../components/MessageForm';
-import ChatHeader from '../../components/ChatHeader';
+import MessageList from '../../components/MessageList/index';
+import MessageForm from '../../components/MessageForm/index';
+import { ChatHeader } from '../../components/Header/index';
+import './index.scss';
 
 const PageChat = ({ chatId, onBack }) => {
     const [chat, setChat] = useState(null);
@@ -17,7 +18,7 @@ const PageChat = ({ chatId, onBack }) => {
             setCompanion(currentChat.participants.find(p => p !== currentUser) || 'Собеседник');
         }
         setLoading(false);
-    }, [chatId]);
+    }, [chatId, currentUser]);
 
     const getMessagesFromLocalStorage = () => {
         const storedChats = localStorage.getItem('chats');
@@ -29,7 +30,7 @@ const PageChat = ({ chatId, onBack }) => {
 
         const message = {
             text: messageText,
-            sender: currentUser,
+            sender: currentUser, 
             time: new Date().toISOString(),
         };
 
@@ -45,6 +46,10 @@ const PageChat = ({ chatId, onBack }) => {
         localStorage.setItem('chats', JSON.stringify(updatedChats));
     };
 
+    const swapUser = () => {
+        setCurrentUser(prevUser => (prevUser === 'me' ? companion : 'me'));
+    };
+
     if (loading) {
         return <div>Загрузка...</div>;
     }
@@ -55,8 +60,14 @@ const PageChat = ({ chatId, onBack }) => {
 
     return (
         <div className="page-chat">
-            <ChatHeader currentUser={currentUser} companion={companion} avatar={chat.image} />
-            <MessageList messages={chat.messages} />
+            <ChatHeader 
+                currentUser={currentUser} 
+                companion={companion} 
+                avatar={chat.image} 
+                onBack={onBack} 
+                onUserSwap={swapUser} 
+            />
+            <MessageList messages={chat.messages} currentUser={currentUser} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

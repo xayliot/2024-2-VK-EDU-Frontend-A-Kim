@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PageChatList from './pages/PageChatList'; 
-import PageChat from './pages/PageChat'; 
+import PageChatList from './pages/PageChatList/index';
+import PageChat from './pages/PageChat/index';
 
 const App = () => {
     const [currentChatId, setCurrentChatId] = useState(null);

@@ -1,7 +1,7 @@
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
-import './ChatListHeader.scss';
+import './HeaderChatList.scss';
 
 const ChatListHeader = ({ currentUser, companion, avatar }) => {
     return (

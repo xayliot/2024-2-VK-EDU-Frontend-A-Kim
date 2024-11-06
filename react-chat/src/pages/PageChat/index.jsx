@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState} from 'react';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';

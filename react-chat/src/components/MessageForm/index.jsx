@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SendIcon from '@mui/icons-material/Send';
 import './index.scss';
 const MessageForm = ({ onSendMessage }) => {
     const [messageText, setMessageText] = useState('');
@@ -21,7 +22,7 @@ const MessageForm = ({ onSendMessage }) => {
                 placeholder="Введите сообщение"
                 required
             />
-            <button type="submit">Отправить</button>
+            <button type="submit" id='send'><SendIcon/></button>
         </form>
     );
 };

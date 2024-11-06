@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';
@@ -9,7 +9,7 @@ const PageChat = ({ chatId, onBack }) => {
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState('me');
     const [companion, setCompanion] = useState('');
-
+    const [newMessage, setNewMessage] = useState(false); 
     useEffect(() => {
         const chats = getMessagesFromLocalStorage();
         const currentChat = chats[chatId];
@@ -44,6 +44,9 @@ const PageChat = ({ chatId, onBack }) => {
 
         setChat(updatedChat);
         localStorage.setItem('chats', JSON.stringify(updatedChats));
+
+        setNewMessage(true);
+        setTimeout(() => setNewMessage(false), 0);
     };
 
     const swapUser = () => {
@@ -67,7 +70,7 @@ const PageChat = ({ chatId, onBack }) => {
                 onBack={onBack} 
                 onUserSwap={swapUser} 
             />
-            <MessageList messages={chat.messages} currentUser={currentUser} />
+            <MessageList messages={chat.messages} newMessage={newMessage} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

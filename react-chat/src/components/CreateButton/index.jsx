@@ -1,9 +1,10 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import './index.scss'; 
 
 const CreateButton = ({ onClick }) => {
     return (
-        <button className="create-button" onClick={onClick}>
+        <button className="add-button" onClick={onClick}>
            <AddIcon />
         </button>
     );

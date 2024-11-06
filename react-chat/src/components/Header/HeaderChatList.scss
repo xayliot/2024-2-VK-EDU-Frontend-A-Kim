@@ -1,9 +1,5 @@
 .chatlist-header {
     display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     align-items: center;
     justify-content: space-between;
     padding: 10px 15px;
@@ -12,4 +8,33 @@
     color: #fff;
     height: 90px;
     font-size: 35px;
+}
+
+#loupe {
+    right: 2vh;
+    border: none; 
+    background: transparent;
+    cursor: pointer; 
+    bottom: 1vh;
+    font-size: 3.5vh;
+    color: #ffffff;
+}
+
+#loupe:hover {
+    animation: pulse 2s infinite;
+}
+
+#vert {
+    right: 2vh;
+    border: none; 
+    background: transparent;
+    cursor: pointer; 
+    bottom: 1vh;
+    font-size: 3.5vh;
+    color: #ffffff;
+    margin:0 0.7vh 0 1vh;
+}
+
+#vert:hover {
+    animation: pulse 2s infinite;
 }

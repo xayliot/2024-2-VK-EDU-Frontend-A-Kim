@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import './ChatModal.scss'; 
+import './index.scss'; 
 
 const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
@@ -28,7 +28,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     };
 
     return (
-        <div className="chat-modal-overlay">
+        <div className="chat-modal-overlay" >
             <div className="chat-modal">
                 <h2>Создать новый чат</h2>
                 <form onSubmit={handleSubmit}>

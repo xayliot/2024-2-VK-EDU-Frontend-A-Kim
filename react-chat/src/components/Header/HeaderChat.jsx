@@ -8,7 +8,7 @@ const ChatHeader = ({ currentUser, companion, avatar, onBack, onUserSwap }) => {
     return (
         <div className="chat-header">
             <div className="header-left">
-                <button onClick={onBack}>
+                <button id="arrow_left_alt" onClick={onBack}>
                     <ArrowBackIcon />
                 </button>
             </div>
@@ -17,16 +17,16 @@ const ChatHeader = ({ currentUser, companion, avatar, onBack, onUserSwap }) => {
                     <img src={avatar} alt={companion} className="ava-img" />
                 </div>
                 <div className="user-info">
-                    <h2 className="username">{currentUser === 'me' ? 'Вы' : currentUser}</h2>
+                    <div className="username">{currentUser === 'me' ? 'Вы' : currentUser}</div>
                     <div className="last-login">Последний заход: 12:00</div>
                 </div>
                 <button id="change_user" onClick={onUserSwap}>Сменить пользователя</button>
             </div>
             <div className="header-right">
-                <button className="material-symbols-outlined" id="loupe">
+                <button id="loupe">
                     <SearchIcon />
                 </button>
-                <button>
+                <button id="vert">
                     <MoreVertIcon />
                 </button>
             </div>

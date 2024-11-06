@@ -26,3 +26,20 @@
     border-bottom: solid grey 1px;
     padding: 20px;
 }
+
+.chat-img-wrap {
+    min-width: 100px; 
+    overflow: hidden; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    margin-right: 15px; 
+}
+
+.chat-img {
+    border-radius: 50%;
+    width: 90%; 
+    aspect-ratio: 1/1;   
+    max-height: 100%;
+    max-width: 100px; 
+}

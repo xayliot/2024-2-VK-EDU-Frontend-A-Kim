@@ -3,7 +3,7 @@ import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
 import CreateButton from '../../components/CreateButton/index';
 import {ChatListHeader} from '../../components/Header/index'; 
-//import './chats.scss'; 
+import './index.scss'; 
 
 const PageChatList = ({ onSelectChat }) => { 
     const [chats, setChats] = useState({});

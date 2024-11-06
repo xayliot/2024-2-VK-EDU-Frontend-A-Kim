@@ -8,7 +8,7 @@ const ChatItem = ({ chat, onSelectChat }) => {
 
     return (
         <div className="chat-item" onClick={() => onSelectChat(chat.id)}>
-            <div className="div-chat-img">
+            <div className="chat-img-wrap">
                 <img className="chat-img" src={chat.image} alt={chat.name} />
             </div>
             <div className="name-content">

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Message from '../Message/index';
 import './index.scss';
 
-const MessageList = ({ messages }) => {
+const MessageList = ({ messages, newMessage }) => {
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (newMessage && messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [newMessage, messages]); 
+
     return (
         <div className="message-list">
             {messages.length === 0 ? (
@@ -12,6 +20,7 @@ const MessageList = ({ messages }) => {
                     <Message key={index} message={message} />
                 ))
             )}
+            <div ref={messagesEndRef} />
         </div>
     );
 };

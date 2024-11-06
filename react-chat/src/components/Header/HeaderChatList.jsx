@@ -7,7 +7,7 @@ const ChatListHeader = ({ currentUser, companion, avatar }) => {
     return (
         <div className="chatlist-header">
             <div className="header-left">
-                <button>
+                <button id='vert'>
                     <MoreVertIcon /> 
                 </button>
             </div>
@@ -15,7 +15,7 @@ const ChatListHeader = ({ currentUser, companion, avatar }) => {
                     <div className="title">{'Messenger'}</div> 
             </div>
             <div className="header-right">
-                <button>
+                <button id='loupe'>
                     <SearchIcon /> 
                 </button>
             </div>

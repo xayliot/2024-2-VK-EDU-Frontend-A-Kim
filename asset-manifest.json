@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.e840b213.css",
+    "main.js": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.d81393a3.js",
+    "static/js/453.6a81d3e2.chunk.js": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/js/453.6a81d3e2.chunk.js",
+    "index.html": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/index.html",
+    "main.e840b213.css.map": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.e840b213.css.map",
+    "main.d81393a3.js.map": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.d81393a3.js.map",
+    "453.6a81d3e2.chunk.js.map": "/xayliot/2024-2-VK-EDU-Frontend-A-Kim/static/js/453.6a81d3e2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e840b213.css",
+    "static/js/main.d81393a3.js"
+  ]
+}

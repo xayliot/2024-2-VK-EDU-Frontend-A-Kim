@@ -2,7 +2,7 @@
   "name": "react-chat",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/xayliot/2024-2-VK-EDU-Frontend-A-Kim/",
+  "homepage": "https://xayliot.github.io/xayliot/2024-2-VK-EDU-Frontend-A-Kim/",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

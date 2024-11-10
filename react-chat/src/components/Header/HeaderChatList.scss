@@ -38,3 +38,9 @@
 #vert:hover {
     animation: pulse 2s infinite;
 }
+
+@media (max-width: 750px){
+    .chatlist-header {
+      height: 60px;
+    }
+  }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
 import CreateButton from '../../components/CreateButton/index';
@@ -8,6 +8,7 @@ import './index.scss';
 const PageChatList = ({ onSelectChat }) => { 
     const [chats, setChats] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const modalRef = useRef(null);
 
     useEffect(() => {   
         const storedChats = localStorage.getItem('chats');
@@ -23,6 +24,33 @@ const PageChatList = ({ onSelectChat }) => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape'){
+            closeModal();
+        }
+    };
+
+    const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)){
+            closeModal();
+        }
+    };
+
+    useEffect(() => {
+        if (isModalOpen) {
+            window.addEventListener('keydown',handleKeyDown);
+            window.addEventListener('mousedown', handleClickOutside);
+        } else {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mousedown', handleClickOutside);
+        };
+
+    },[isModalOpen]);
 
     const createChat = (chatData) => {
         const chatId = Date.now().toString();
@@ -51,7 +79,12 @@ const PageChatList = ({ onSelectChat }) => {
             </div>
             
             {isModalOpen && (
-                <ChatModal onClose={closeModal} onCreateChat={createChat} />
+                <div className="chat-modal-overlay" onClick={handleClickOutside}>
+                    <div className="chat-modal" ref={modalRef}>
+                        <ChatModal onClose={closeModal} onCreateChat={createChat} />
+                    </div>
+                </div>
+
             )}
         </div>
     );

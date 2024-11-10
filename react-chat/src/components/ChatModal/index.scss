@@ -1,19 +1,28 @@
-.chat-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.form-wraper {
+    margin: 2px;
+    .form-group {
+        #participants, #chat-image, #chat-name {
+            font-size: 25px;
+        }   
+    }
+    button {
+        margin: 2px;
+        font-size: 20px;
+    }
 }
 
-.chat-modal {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px; // или нужная ширина
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+
+@media (max-width: 750px){
+    .form-wraper {
+        .form-group {
+            #participants, #chat-image, #chat-name {
+                font-size: 15px;
+            }   
+        }
+        button {
+            margin: 2px;
+            font-size: 15px;
+        }
+     
+    }
+  }

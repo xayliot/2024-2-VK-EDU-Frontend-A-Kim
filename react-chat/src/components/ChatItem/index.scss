@@ -4,7 +4,7 @@
     display: flex;
     justify-content: start;
     padding: 10px;
-    height: calc(800px/8);
+    height: calc(700px/8);
     align-items: center;
     transition: transform 0.2s ease;
     text-wrap: nowrap;
@@ -42,4 +42,26 @@
     aspect-ratio: 1/1;   
     max-height: 100%;
     max-width: 100px; 
+}
+
+@media (max-width: 750px){
+    .chat-item {
+        padding: 0px;
+        .chat-img-wrap {
+            margin-right: 0px;
+            .chat-img {
+                width: 70px; 
+            }
+        }
+
+        .name-content {
+            .name {
+                font-size: 14px;
+            }
+
+            .lasttext {
+                font-size: 12px;
+            }
+        }
+    }
 }

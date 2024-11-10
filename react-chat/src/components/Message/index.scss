@@ -1,21 +1,19 @@
 .timestamp {
-    font-size: 14px;
+    bottom: -1px;
+    inset-inline-end: 0;
+    padding: 2px;
     position: absolute;
-    right: 10px;
-    bottom: 5px;
 }
 
 .message {
-    padding: 5px 25px 30px 10px;
     margin: 10px;
     border: solid rgb(161, 160, 160) 0.5px;
-    border-radius: 10px;
     max-width: 80%;
     overflow-wrap: break-word;
     line-height: 1.3;
     position: relative;
-    min-width: 150px;
     animation: bounceIn 0.5s ease;
+    display: flex;
 }
 
 .message.me {
@@ -33,10 +31,17 @@
 
 .message-text {
     font-size: 20px;
+    word-break: break-word;
+    margin: 4px 8px 5px;
+    white-space: pre-wrap;
 }
 
 .message-name {
     font-size: 22px;
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 .timestamp {

@@ -1,14 +1,23 @@
 .add-button {
+    display: flex;
     width: 80px;
     border-radius: 50%;
     aspect-ratio: 1/1; 
     font-size: 50px;
     border: none;
+    align-items: center;
+    justify-content: center;
 }
 .add-button:hover {
     background-color: #8E24AA;
     animation: pulse 2s infinite;
-    transform: scale(1.2);
+    transform: scale(1.1);
+}
+
+@media (max-width: 750px){
+  .add-button {
+    width: 70px;
+  }
 }
 
 @-webkit-keyframes pulse {

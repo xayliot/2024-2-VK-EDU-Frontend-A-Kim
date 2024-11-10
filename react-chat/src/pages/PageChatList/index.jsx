@@ -25,19 +25,20 @@ const PageChatList = ({ onSelectChat }) => {
         setIsModalOpen(false);
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Escape'){
-            closeModal();
-        }
-    };
 
-    const handleClickOutside = (e) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)){
-            closeModal();
-        }
-    };
 
     useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape'){
+                closeModal();
+            }
+        };
+    
+        const handleClickOutside = (e) => {
+            if (modalRef.current && !modalRef.current.contains(e.target)){
+                closeModal();
+            }
+        };
         if (isModalOpen) {
             window.addEventListener('keydown',handleKeyDown);
             window.addEventListener('mousedown', handleClickOutside);

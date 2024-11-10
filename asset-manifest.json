@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.e840b213.css",
-    "main.js": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.ff797727.js",
+    "main.css": "/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.6b75a5c8.css",
+    "main.js": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.54c6cb68.js",
     "static/js/453.6a81d3e2.chunk.js": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/453.6a81d3e2.chunk.js",
     "index.html": "/2024-2-VK-EDU-Frontend-A-Kim/index.html",
-    "main.e840b213.css.map": "/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.e840b213.css.map",
-    "main.ff797727.js.map": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.ff797727.js.map",
+    "main.6b75a5c8.css.map": "/2024-2-VK-EDU-Frontend-A-Kim/static/css/main.6b75a5c8.css.map",
+    "main.54c6cb68.js.map": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/main.54c6cb68.js.map",
     "453.6a81d3e2.chunk.js.map": "/2024-2-VK-EDU-Frontend-A-Kim/static/js/453.6a81d3e2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e840b213.css",
-    "static/js/main.ff797727.js"
+    "static/css/main.6b75a5c8.css",
+    "static/js/main.54c6cb68.js"
   ]
 }

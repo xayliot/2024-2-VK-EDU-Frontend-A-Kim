@@ -1,27 +1,14 @@
-import React, { useState } from 'react';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import PageChatList from './pages/PageChatList/index';
 import PageChat from './pages/PageChat/index';
 
-const App = () => {
-    const [currentChatId, setCurrentChatId] = useState(null);
+const AppRouter = () => (
+    <HashRouter>
+        <Routes>
+            <Route path="/" element={<PageChatList />} />
+            <Route path="/chat/:chatId" element={<PageChat onBack={() => window.history.back()} />} />
+        </Routes>
+    </HashRouter>
+);
 
-    const handleSelectChat = (chatId) => {
-        setCurrentChatId(chatId);
-    };
-
-    const handleBackToChatList = () => {
-        setCurrentChatId(null);
-    };
-
-    return (
-        <div className="app">
-            {currentChatId === null ? (
-                <PageChatList onSelectChat={handleSelectChat} />
-            ) : (
-                <PageChat chatId={currentChatId} onBack={handleBackToChatList} />
-            )}
-        </div>
-    );
-};
-
-export default App;
+export default AppRouter;

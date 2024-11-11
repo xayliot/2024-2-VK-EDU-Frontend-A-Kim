@@ -1,15 +1,18 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';
 import './index.scss';
 
-const PageChat = ({ chatId, onBack }) => {
+const PageChat = ({ onBack }) => {
+    const { chatId } = useParams(); 
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState('me');
     const [companion, setCompanion] = useState('');
     const [newMessage, setNewMessage] = useState(false); 
+
     useEffect(() => {
         const chats = getMessagesFromLocalStorage();
         const currentChat = chats[chatId];

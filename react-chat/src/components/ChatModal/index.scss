@@ -1,0 +1,28 @@
+.form-wraper {
+    margin: 2px;
+    .form-group {
+        #participants, #chat-image, #chat-name {
+            font-size: 25px;
+        }   
+    }
+    button {
+        margin: 2px;
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 750px){
+    .form-wraper {
+        .form-group {
+            #participants, #chat-image, #chat-name {
+                font-size: 15px;
+            }   
+        }
+        button {
+            margin: 2px;
+            font-size: 15px;
+        }
+     
+    }
+  }

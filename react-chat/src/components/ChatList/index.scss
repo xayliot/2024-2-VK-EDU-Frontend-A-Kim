@@ -1,0 +1,10 @@
+.chat-list {
+    padding: 15px;
+    overflow: hidden; 
+}
+
+@media (max-width: 750px){
+    .chat-list {
+        padding: 0px;
+    }
+}

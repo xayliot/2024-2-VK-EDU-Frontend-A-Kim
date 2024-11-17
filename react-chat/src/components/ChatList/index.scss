@@ -1,6 +1,8 @@
 .chat-list {
     padding: 15px;
-    overflow: hidden; 
+    overflow: hidden;
+    height: 85vh;
+    overflow-y: auto; 
 }
 
 @media (max-width: 750px){

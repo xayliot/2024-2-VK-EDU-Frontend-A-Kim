@@ -16,6 +16,10 @@ const PageChatList = () => {
         navigate(`/chat/${chatId}`);
     };
 
+    const handlePageEdit = () => {
+        navigate(`/Profile`);
+    };
+
     useEffect(() => {
         const storedChats = localStorage.getItem('chats');
         if (storedChats) {
@@ -72,7 +76,7 @@ const PageChatList = () => {
 
     return (
         <div className="page-chat-list">
-            <ChatListHeader />
+            <ChatListHeader pageEdit={handlePageEdit}/>
             <ChatList 
                 chats={chats} 
                 onSelectChat={handleSelectedChat} 

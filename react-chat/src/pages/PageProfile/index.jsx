@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ProfilePicture from '../../components/ProfilePicture/index';
-import ProfileInput from '../../components/ProfileInput';
+import { ProfileInput, ProfileInput1 } from '../../components/ProfileInput';
 import BioInput from '../../components/BioInput';
 import ProfileHeader from '../../components/Header/HeaderProfile';
 import './index.scss';
 
-const PageProfile = ({ onBack }) => {
-    const [fullName, setFullName] = useState('');
+const PageProfile = () => {
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
@@ -15,7 +16,8 @@ const PageProfile = ({ onBack }) => {
     useEffect(() => {
         const storedProfile = JSON.parse(localStorage.getItem('profile'));
         if (storedProfile) {
-            setFullName(storedProfile.fullName || '');
+            setName(storedProfile.name || '');
+            setSurname(storedProfile.surname || '');
             setUsername(storedProfile.username || '');
             setBio(storedProfile.bio || '');
             setProfilePicture(storedProfile.profilePicture || null);
@@ -41,7 +43,8 @@ const PageProfile = ({ onBack }) => {
 
     const handleSave = () => {
         const profileData = {
-            fullName,
+            name,
+            surname,
             username,
             bio,
             profilePicture,
@@ -51,14 +54,17 @@ const PageProfile = ({ onBack }) => {
 
     return (
         <div className="page-profile">
-            <ProfileHeader onBack={onBack} onSave={handleSave} />
+            <ProfileHeader onSave={handleSave} />
             <div className='page-content'>
-            <ProfilePicture profilePicture={profilePicture} onFileChange={handleFileChange} />
+                <ProfilePicture profilePicture={profilePicture} onFileChange={handleFileChange} />
                 <div className="profile-info">
-                    <ProfileInput 
-                        label={'Full name'}
-                        value={fullName} 
-                        onChange={(e) => setFullName(e.target.value)} 
+                    <ProfileInput1 
+                        label={'Name'}
+                        label1={'Surname'}
+                        value={name}
+                        value1={surname} 
+                        onChangeName={(e) => setName(e.target.value)} 
+                        onChangeSurname={(e) => setSurname(e.target.value)} 
                     />
                     <ProfileInput
                         label={'Username'} 
@@ -66,7 +72,9 @@ const PageProfile = ({ onBack }) => {
                         onChange={handleUsernameChange} 
                         minLength={5} 
                     />
-                    {!isUsernameValid && <div className="error-message">Minimum length is 5 characters</div>}
+                    {!isUsernameValid && (
+                        <div className="error-message">Minimum length is 5 characters</div>
+                    )}
                     <BioInput 
                         value={bio} 
                         onChange={(e) => setBio(e.target.value)} 

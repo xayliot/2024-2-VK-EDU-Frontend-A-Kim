@@ -3,11 +3,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './HeaderProfile.scss';
 import CheckIcon from '@mui/icons-material/Check';
 
-const ProfileHeader = ({ onBack, onSave }) => {
+const handleGoBack = () => {
+    window.history.back()
+}
+
+const ProfileHeader = ({ onSave }) => {
     return (
         <div className="Profile-header">
             <div className="header-left">
-                <button id="arrow_left_alt" onClick={onBack}>
+                <button id="arrow_left_alt" onClick={handleGoBack}>
                     <ArrowBackIcon />
                 </button>
             </div>

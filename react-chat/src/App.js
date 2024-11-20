@@ -6,8 +6,8 @@ const AppRouter = () => (
     <HashRouter>
         <Routes>
             <Route path="/" element={<PageChatList />} />
-            <Route path="/chat/:chatId" element={<PageChat onBack={() => window.history.back()} />} />
-            <Route path="/profile" element={<PageProfile onBack={() => window.history.back()} />} />
+            <Route path="/chat/:chatId" element={<PageChat  />} />
+            <Route path="/profile" element={<PageProfile  />} />
         </Routes>
     </HashRouter>
 );

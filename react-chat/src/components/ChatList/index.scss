@@ -5,6 +5,11 @@
     overflow-y: auto; 
 }
 
+.chat-link {
+    text-decoration: none;  
+    color: inherit;         
+}
+
 @media (max-width: 750px){
     .chat-list {
         padding: 0px;

@@ -1,4 +1,4 @@
-.bio-input-contener {
+.bio-input-container {
     width: 400px;
     height: 150px;
     background-color: #f0efef;
@@ -6,14 +6,16 @@
     border-radius: 8px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 1);
     margin-top: 40px;
+    display: flex;
+    flex-direction: column;
     .bio-input {
         display: flex;
         background: none;
         border: none;
-        width: -webkit-fill-available;
         font-size: 18px;
         resize: none;
         height: 130px;
+        flex: 1;
     }
     
     .Bio-title {
@@ -25,7 +27,7 @@
 
 
 @media  (max-width: 500px){
-    .bio-input-contener {
+    .bio-input-container {
         width: 300px;
         .bio-input {
             font-size: 15px;

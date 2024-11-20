@@ -5,7 +5,7 @@ import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';
 import './index.scss';
 
-const PageChat = ({ onBack }) => {
+const PageChat = ( ) => {
     const { chatId } = useParams(); 
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -70,7 +70,6 @@ const PageChat = ({ onBack }) => {
                 currentUser={currentUser} 
                 companion={companion} 
                 avatar={chat.image} 
-                onBack={onBack} 
                 onUserSwap={swapUser} 
             />
             <MessageList messages={chat.messages} newMessage={newMessage} />

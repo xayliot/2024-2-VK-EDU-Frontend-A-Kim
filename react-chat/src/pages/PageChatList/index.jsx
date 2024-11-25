@@ -4,6 +4,7 @@ import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
 import CreateButton from '../../components/CreateButton/index';
 import { ChatListHeader } from '../../components/Header/index';
+import axios from 'axios';
 import './index.scss';
 
 const PageChatList = () => {
@@ -21,10 +22,16 @@ const PageChatList = () => {
     };
 
     useEffect(() => {
-        const storedChats = localStorage.getItem('chats');
-        if (storedChats) {
-            setChats(JSON.parse(storedChats));
-        }
+        const fetchChats = async () => {
+            try {
+                const response = await axios.get('...');
+                setChats(response.data);
+            } catch (error) {
+                console.error('Ошибка при получении чатов:', error);
+            }
+        };
+
+        fetchChats();
     }, []);
 
     const openModal = () => {
@@ -59,19 +66,14 @@ const PageChatList = () => {
         };
     }, [isModalOpen]);
 
-    const createChat = (chatData) => {
-        const chatId = Date.now().toString();
-        const newChat = {
-            id: chatId,
-            ...chatData,
-            messages: [],
-        };
-
-        const newChats = { ...chats, [chatId]: newChat };
-
-        localStorage.setItem('chats', JSON.stringify(newChats));
-        setChats(newChats);
-        closeModal();
+    const createChat = async (chatData) => {
+        try {
+            const response = await axios.post('...',chatData);
+            setChats((prevChats) => [...prevChats, response.data]);
+            closeModal();
+        } catch (error) {
+            console.error('Ошибка при создании чата:', error);
+        }
     };
 
     return (

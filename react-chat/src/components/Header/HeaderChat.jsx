@@ -4,11 +4,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
 
-const ChatHeader = ({ currentUser, companion, avatar, onBack, onUserSwap }) => {
+const handleGoBack = () => {
+    window.history.back()
+}
+
+const ChatHeader = ({ currentUser, companion, avatar, onUserSwap }) => {
     return (
         <div className="chat-header">
             <div className="header-left">
-                <button id="arrow_left_alt" onClick={onBack}>
+                <button id="arrow_left_alt" onClick={handleGoBack}>
                     <ArrowBackIcon />
                 </button>
             </div>

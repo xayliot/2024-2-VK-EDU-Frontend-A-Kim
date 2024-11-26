@@ -3,11 +3,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
 import './HeaderChatList.scss';
 
-const ChatListHeader = ({ currentUser, companion, avatar }) => {
+const ChatListHeader = ({pageEdit }) => {
     return (
         <div className="chatlist-header">
             <div className="header-left">
-                <button id='vert'>
+                <button id='vert' onClick={pageEdit}>
                     <MoreVertIcon /> 
                 </button>
             </div>

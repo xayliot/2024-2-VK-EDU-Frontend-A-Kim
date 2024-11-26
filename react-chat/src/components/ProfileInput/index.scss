@@ -1,0 +1,36 @@
+.profile-input-container {
+    width: 400px; 
+    background-color: #f0efef; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 1); 
+    margin-top: 30px; 
+
+    .profile-input {
+        display: flex;
+        background: none;
+        border: none;
+            width: -webkit-fill-available;
+        font-size: 18px;
+    }
+    
+    .label {
+        display: flex;
+        opacity: 70%;
+    }
+    
+}
+
+
+@media  (max-width: 500px){
+    .profile-input-container {
+        width: 300px;
+        .profile-input {
+            font-size: 15px;
+        }
+        .label {
+            font-size: 14px;
+        }
+    }
+    
+}

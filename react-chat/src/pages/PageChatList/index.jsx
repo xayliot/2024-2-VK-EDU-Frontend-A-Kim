@@ -1,14 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {useNavigate} from 'react-router-dom';
 import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
 import CreateButton from '../../components/CreateButton/index';
 import { ChatListHeader } from '../../components/Header/index';
 import './index.scss';
 
-const PageChatList = ({ onSelectChat }) => {
+const PageChatList = () => {
     const [chats, setChats] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
+    const navigate = useNavigate();
+    
+    const handleSelectedChat = (chatId) => {
+        navigate(`/chat/${chatId}`);
+    };
+
+    const handlePageEdit = () => {
+        navigate(`/Profile`);
+    };
 
     useEffect(() => {
         const storedChats = localStorage.getItem('chats');
@@ -66,10 +76,10 @@ const PageChatList = ({ onSelectChat }) => {
 
     return (
         <div className="page-chat-list">
-            <ChatListHeader />
+            <ChatListHeader pageEdit={handlePageEdit}/>
             <ChatList 
                 chats={chats} 
-                onSelectChat={onSelectChat} 
+                onSelectChat={handleSelectedChat} 
             />
             <div className='create-button'>
                 <CreateButton onClick={openModal} />

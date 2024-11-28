@@ -26,7 +26,7 @@ const Register = () => {
         }
 
         try {
-            const response = await axios.post('...', formData, { //здесь url на бэк
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/', formData, { 
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

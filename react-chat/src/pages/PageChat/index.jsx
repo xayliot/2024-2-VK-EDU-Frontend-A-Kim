@@ -3,53 +3,71 @@ import { useParams } from 'react-router-dom';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';
+import axios from 'axios';
 import './index.scss';
 
-const PageChat = ( ) => {
+const PageChat = () => {
     const { chatId } = useParams(); 
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState('me');
+    const [currentUser, setCurrentUser] = useState('me'); 
     const [companion, setCompanion] = useState('');
     const [newMessage, setNewMessage] = useState(false); 
 
     useEffect(() => {
-        const chats = getMessagesFromLocalStorage();
-        const currentChat = chats[chatId];
-        if (currentChat) {
-            setChat(currentChat);
-            setCompanion(currentChat.participants.find(p => p !== currentUser) || 'Собеседник');
-        }
-        setLoading(false);
+        const fetchChat = async () => {
+            try {
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/chats/${chatId}`);
+                const chatData = response.data; 
+                
+                setChat(chatData);
+                setCompanion(chatData.participants.find(p => p.id !== currentUser) || 'Собеседник');
+            } catch (error) {
+                console.error('Ошибка получения чата:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchChat();
     }, [chatId, currentUser]);
 
-    const getMessagesFromLocalStorage = () => {
-        const storedChats = localStorage.getItem('chats');
-        return storedChats ? JSON.parse(storedChats) : {};
-    };
-
-    const handleNewMessage = (messageText) => {
+    const handleNewMessage = async (messageText) => {
         if (!chat) return;
 
         const message = {
+            id: Date.now().toString(), 
             text: messageText,
-            sender: currentUser, 
-            time: new Date().toISOString(),
+            chat: chatId,
+            sender: {
+                id: currentUser,
+                username: 'Username', 
+                first_name: 'FirstName', 
+                last_name: 'LastName', 
+                bio: null,
+                avatar: null,
+                last_online_at: new Date().toISOString(),
+                is_online: true,
+            },
+            files: [], 
+            was_read_by: [],
+            updated_at: new Date().toISOString(),
+            created_at: new Date().toISOString(),
         };
 
-        const updatedMessages = [...chat.messages, message];
-        const updatedChat = { ...chat, messages: updatedMessages };
+        try {
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/chats/${chatId}/messages`, message); 
+            const updatedChat = {
+                ...chat,
+                messages: [...chat.messages, response.data], 
+            };
 
-        const updatedChats = {
-            ...getMessagesFromLocalStorage(),
-            [chatId]: updatedChat,
-        };
-
-        setChat(updatedChat);
-        localStorage.setItem('chats', JSON.stringify(updatedChats));
-
-        setNewMessage(true);
-        setTimeout(() => setNewMessage(false), 0);
+            setChat(updatedChat);
+            setNewMessage(true);
+            setTimeout(() => setNewMessage(false), 0);
+        } catch (error) {
+            console.error('Ошибка отправки сообщения:', error);
+        }
     };
 
     const swapUser = () => {

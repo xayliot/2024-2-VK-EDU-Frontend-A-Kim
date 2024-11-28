@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('', { //здесь url на бэк
+            const response = await axios.post('https://vkedu-fullstack-div2.ru', { //здесь url на бэк
                 username,
                 password,
             });

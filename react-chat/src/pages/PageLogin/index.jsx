@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/', { 
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/auth/', { 
                 username,
                 password,
             });

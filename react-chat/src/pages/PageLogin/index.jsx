@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru', { //здесь url на бэк
+            const response = await axios.post('https://vkedu-fullstack-div2.ru', { 
                 username,
                 password,
             });

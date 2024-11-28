@@ -3,7 +3,7 @@ import PageChatList from './pages/PageChatList/index';
 import PageChat from './pages/PageChat/index';
 import PageProfile from './pages/PageProfile/index';
 import Login from './pages/PageLogin/index'; 
-import Register from './pages/Register/index'; 
+import Register from './pages/PageRegister/index'; 
 import { useAuth } from './AuthContext';
 
 const AppRouter = () => {

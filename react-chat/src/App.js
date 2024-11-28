@@ -2,7 +2,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import PageChatList from './pages/PageChatList/index';
 import PageChat from './pages/PageChat/index';
 import PageProfile from './pages/PageProfile/index';
-import Login from './pages/Login/index'; 
+import Login from './pages/PageLogin/index'; 
 import Register from './pages/Register/index'; 
 import { useAuth } from './AuthContext';
 

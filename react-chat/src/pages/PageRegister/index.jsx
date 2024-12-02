@@ -9,10 +9,12 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
+    const [errors, setErrors] = useState({}); 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
 
         const formData = new FormData();
         formData.append('username', username);
@@ -26,31 +28,18 @@ const Register = () => {
 
         try {
             const response = await axios.post('https://vkedu-fullstack-div2.ru/api/register/', formData);
-
             const body = response.data;
 
             if (body.success) {
                 navigate('/login');
             } else {
-                showErrors(body);
+                setErrors(body); 
             }
         } catch (err) {
             console.error('Ошибка при регистрации:', err);
-        }
-    };
-
-    const showErrors = (body) => {
-        if (body.username) {
-            document.getElementById('username-error').innerText = body.username.join(', ');
-        }
-        if (body.password) {
-            document.getElementById('password-error').innerText = body.password.join(', ');
-        }
-        if (body.first_name) {
-            document.getElementById('first-name-error').innerText = body.first_name.join(', ');
-        }
-        if (body.last_name) {
-            document.getElementById('last-name-error').innerText = body.last_name.join(', ');
+            if (err.response && err.response.data) {
+                setErrors(err.response.data);
+            }
         }
     };
 
@@ -67,7 +56,7 @@ const Register = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
-                    <div id="username-error" className="error"></div>
+                    {errors.username && <div className="error">{errors.username.join(', ')}</div>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Пароль</label>
@@ -78,7 +67,7 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <div id="password-error" className="error"></div>
+                    {errors.password && <div className="error">{errors.password.join(', ')}</div>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="first_name">Имя</label>
@@ -89,7 +78,7 @@ const Register = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                         required
                     />
-                    <div id="first-name-error" className="error"></div>
+                    {errors.first_name && <div className="error">{errors.first_name.join(', ')}</div>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="last_name">Фамилия</label>
@@ -100,7 +89,7 @@ const Register = () => {
                         onChange={(e) => setLastName(e.target.value)}
                         required
                     />
-                    <div id="last-name-error" className="error"></div>
+                    {errors.last_name && <div className="error">{errors.last_name.join(', ')}</div>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="bio">Биография</label>

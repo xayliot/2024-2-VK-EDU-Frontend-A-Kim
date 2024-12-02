@@ -24,7 +24,13 @@ const PageChatList = () => {
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/chats');
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/chats', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
                 setChats(response.data);
             } catch (error) {
                 console.error('Ошибка при получении чатов:', error);
@@ -68,7 +74,15 @@ const PageChatList = () => {
 
     const createChat = async (chatData) => {
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',chatData);
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                },
+                chatData);
             setChats((prevChats) => [...prevChats, response.data]);
             closeModal();
         } catch (error) {

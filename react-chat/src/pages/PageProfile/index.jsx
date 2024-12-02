@@ -59,17 +59,22 @@ const PageProfile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post(`https://vkedu-fullstack-div2.ru/API/user/${user.id}`, { 
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`, {
                 first_name,
                 last_name,
                 username,
                 bio,
                 profilePicture,
+            }, { headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            }, 
             });
             alert('Данные профиля успешно сохранены');
-            console.log('Данные профиля успешно сохранены:', response.data);
         } catch (error) {
             console.log('Ошибка сохранения данных:', error);
+            alert('Ошибка сохранения данных');
         }
     };
 

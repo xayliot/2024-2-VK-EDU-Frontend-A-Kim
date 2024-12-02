@@ -75,14 +75,13 @@ const PageChatList = () => {
     const createChat = async (chatData) => {
         try {
             const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',chatData,
                 {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     }
-                },
-                chatData);
+                });
             setChats((prevChats) => [...prevChats, response.data]);
             closeModal();
         } catch (error) {

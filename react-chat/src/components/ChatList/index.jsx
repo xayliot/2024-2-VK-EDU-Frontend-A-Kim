@@ -4,18 +4,22 @@ import './index.scss';
 import { Link } from 'react-router-dom';  
 
 const ChatList = ({ chats }) => {
+    const chatKeys = chats ? Object.keys(chats) : [];
+
     return (
         <div className="chat-list">
-        {chats.length === 0 ? (
-            <div className="no-chats">Нет чатов</div>
-        ) : (
-            chats.map(chat => (
-                <Link to={`/chat/${chat.id}`} key={chat.id} className='chat-link'>
-                    <ChatItem chat={chat} />
-                </Link>
-            ))
-        )}
-    </div>
+            {chatKeys.length === 0 ? (
+                <div>Нет чатов</div>
+            ) : (
+                chatKeys.map(chatId => (
+                    <Link to={`/chat/${chatId}`} key={chatId} className='chat-link'>
+                        <ChatItem  
+                            chat={chats[chatId]} 
+                        />
+                    </Link>
+                ))
+            )}
+        </div>
     );
 };
 

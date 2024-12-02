@@ -8,7 +8,7 @@ import axios from 'axios';
 import './index.scss';
 
 const PageChatList = () => {
-    const [chats, setChats] = useState([]);
+    const [chats, setChats] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
     const navigate = useNavigate();
@@ -86,7 +86,10 @@ const PageChatList = () => {
                         'Authorization': `Bearer ${accessToken}`,
                     }
                 });
-            setChats((prevChats) => [...prevChats, response.data]);
+            setChats((prevChats) => ({
+                ...prevChats,
+            [response.data.id]: response.data,
+        }));
             closeModal();
         } catch (error) {
             console.error('Ошибка при создании чата:', error);

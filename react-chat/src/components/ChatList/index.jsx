@@ -6,18 +6,16 @@ import { Link } from 'react-router-dom';
 const ChatList = ({ chats }) => {
     return (
         <div className="chat-list">
-            {Object.keys(chats).length === 0 ? (
-                <div>Нет чатов</div>
-            ) : (
-                Object.keys(chats).map(chatId => (
-                    <Link to={`/chat/${chatId}`} key={chatId} className='chat-link'>
-                        <ChatItem  
-                            chat={chats[chatId]} 
-                        />
-                    </Link>
-                ))
-            )}
-        </div>
+        {chats.length === 0 ? (
+            <div className="no-chats">Нет чатов</div>
+        ) : (
+            chats.map(chat => (
+                <Link to={`/chat/${chat.id}`} key={chat.id} className='chat-link'>
+                    <ChatItem chat={chat} />
+                </Link>
+            ))
+        )}
+    </div>
     );
 };
 

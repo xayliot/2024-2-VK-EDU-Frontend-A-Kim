@@ -8,7 +8,7 @@ import axios from 'axios';
 import './index.scss';
 
 const PageChatList = () => {
-    const [chats, setChats] = useState({});
+    const [chats, setChats] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
     const navigate = useNavigate();
@@ -31,6 +31,7 @@ const PageChatList = () => {
                         'Authorization': `Bearer ${accessToken}`,
                     }
                 });
+                console.log(response.data);
                 setChats(response.data);
             } catch (error) {
                 console.error('Ошибка при получении чатов:', error);
@@ -74,6 +75,9 @@ const PageChatList = () => {
 
     const createChat = async (chatData) => {
         try {
+            if (!chatData) {
+                throw new Error('Chat data is required');
+            }
             const accessToken = localStorage.getItem('accessToken');
             const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',chatData,
                 {

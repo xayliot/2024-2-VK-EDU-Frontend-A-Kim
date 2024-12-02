@@ -60,7 +60,7 @@ const PageProfile = () => {
     const handleSave = async () => {
         try {
             const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`, {
+            await axios.post(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`, {
                 first_name,
                 last_name,
                 username,

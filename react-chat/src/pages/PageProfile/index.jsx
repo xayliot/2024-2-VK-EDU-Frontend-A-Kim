@@ -4,7 +4,7 @@ import { ProfileInput, ProfileInput1 } from '../../components/ProfileInput';
 import BioInput from '../../components/BioInput';
 import ProfileHeader from '../../components/Header/HeaderProfile';
 import axios from 'axios';
-import {useAuth} from '../../AuthContext.js'
+import { useAuth } from '../../AuthContext.js';
 import './index.scss';
 
 const PageProfile = () => {
@@ -17,20 +17,20 @@ const PageProfile = () => {
     const [isUsernameValid, setIsUsernameValid] = useState(true);
 
     useEffect(() => {
-        const fetchProfile =async () => {
+        const fetchProfile = async () => {
             try {
-                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/user/${user.id}');
-                setFirstName(response.first_name);
-                setLastName(response.last_name);
-                setUsername(response.username);
-                setBio(response.bio);
-                setProfilePicture(response.profilePicture);    
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`);
+                setFirstName(response.data.first_name);
+                setLastName(response.data.last_name);
+                setUsername(response.data.username);
+                setBio(response.data.bio);
+                setProfilePicture(response.data.profilePicture);    
             } catch (error) {
-                console.error('Ошибка получения информации о пользователе',error);
+                console.error('Ошибка получения информации о пользователе', error);
             }
         };
         if (user) fetchProfile();
-    }, []);
+    }, [user]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -53,7 +53,7 @@ const PageProfile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/API/user/${user.id}', { 
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/API/user/${user.id}`, { 
                 first_name,
                 last_name,
                 username,
@@ -65,7 +65,8 @@ const PageProfile = () => {
         } catch (error) {
             console.log('Ошибка сохранения данных:', error);
         }
-    }
+    };
+
     return (
         <div className="page-profile">
             <ProfileHeader onSave={handleSave} />

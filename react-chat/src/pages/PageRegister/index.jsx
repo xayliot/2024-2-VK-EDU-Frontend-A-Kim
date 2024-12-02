@@ -9,7 +9,7 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
-    const [error, setError] = useState('');
+    const [error, setError] = useState({});
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -33,12 +33,12 @@ const Register = () => {
             });
 
             if (response.data.success) {
-                navigate('/login'); 
+                navigate('/login');
             } else {
-                setError(response.data.message || 'Ошибка регистрации. Попробуйте еще раз.');
+                setError(response.data.errors || { general: response.data.message || 'Ошибка регистрации. Попробуйте еще раз.' });
             }
         } catch (err) {
-            setError('Ошибка регистрации. Попробуйте еще раз.');
+            setError({ general: 'Ошибка регистрации. Попробуйте еще раз.' });
         }
     };
 
@@ -55,6 +55,9 @@ const Register = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
+                    {error.username && error.username.map((msg, index) => (
+                        <div key={index} className="error">{msg}</div>
+                    ))}
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Пароль</label>
@@ -65,6 +68,9 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+                    {error.password && error.password.map((msg, index) => (
+                        <div key={index} className="error">{msg}</div>
+                    ))}
                 </div>
                 <div className="form-group">
                     <label htmlFor="first_name">Имя</label>
@@ -75,6 +81,9 @@ const Register = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                         required
                     />
+                    {error.first_name && error.first_name.map((msg, index) => (
+                        <div key={index} className="error">{msg}</div>
+                    ))}
                 </div>
                 <div className="form-group">
                     <label htmlFor="last_name">Фамилия</label>
@@ -85,6 +94,9 @@ const Register = () => {
                         onChange={(e) => setLastName(e.target.value)}
                         required
                     />
+                    {error.last_name && error.last_name.map((msg, index) => (
+                        <div key={index} className="error">{msg}</div>
+                    ))}
                 </div>
                 <div className="form-group">
                     <label htmlFor="bio">Биография</label>
@@ -103,7 +115,7 @@ const Register = () => {
                         onChange={(e) => setAvatar(e.target.files[0])}
                     />
                 </div>
-                {error && <div className="error">{error}</div>}
+                {error.general && <div className="error">{error.general}</div>}
                 <button type="submit">Зарегистрироваться</button>
             </form>
         </div>

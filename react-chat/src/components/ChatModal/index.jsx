@@ -1,19 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import './index.scss'; 
 
 const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
-    const [participants, setParticipants] = useState('');
+    const [participant, setParticipant] = useState('');
     const [image, setImage] = useState('');
+    const [users, setUsers] =useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const chatNameInputRef = useRef(null);
 
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/users/');
+                setUsers(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchUsers();
+    }, []);
+
+    useEffect(() =>{
+        if (participant) {
+            const filtered = users.filter(user =>
+                user.username.toLowerCase().includes(participant.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        } else {
+            setFilteredUsers([]);
+        }
+    }, [participant, users])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newChatData = {
+            id: Date.now(),
             name: chatName,
-            participants: participants.split(',').map(p => p.trim()), 
+            participants: [participant], 
             image: image,
             messages: [],
         };
@@ -24,10 +50,16 @@ const ChatModal = ({ onClose, onCreateChat }) => {
 
     const resetForm = () => {
         setChatName('');
-        setParticipants('');
+        setParticipant('');
         setImage('');
         onClose();
+        setFilteredUsers('');
     };
+
+    const handleUserSelect = (user) => {
+        setParticipant(user.username);
+        setFilteredUsers([]);
+    }
 
     useEffect (() =>{
         if (chatNameInputRef.current) {
@@ -52,13 +84,23 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                 </div>
                 <div className="form-group">
                     <input
-                        placeholder='Участник'
+                        placeholder='Username участника'
                         type="text"
-                        id="participants"
-                        value={participants}
-                        onChange={(e) => setParticipants(e.target.value)}
+                        id="participant"
+                        value={participant}
+                        onChange={(e) => setParticipant(e.target.value)}
+                        onFocus={() => setFilteredUsers(users)} 
                         required
                     />
+                    {filteredUsers.length > 0 && (
+                        <ul className="user-list">
+                            {filteredUsers.map(user => (
+                                <li key={user.id} onClick={() => handleUserSelect(user)}>
+                                    {user.username}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
                 <div className="form-group">
                     <input

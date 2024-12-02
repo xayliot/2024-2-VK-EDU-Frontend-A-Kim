@@ -4,9 +4,11 @@ import { ProfileInput, ProfileInput1 } from '../../components/ProfileInput';
 import BioInput from '../../components/BioInput';
 import ProfileHeader from '../../components/Header/HeaderProfile';
 import axios from 'axios';
+import {useAuth} from '../../AuthContext.js'
 import './index.scss';
 
 const PageProfile = () => {
+    const { user } = useAuth();
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
     const [username, setUsername] = useState('');
@@ -17,7 +19,7 @@ const PageProfile = () => {
     useEffect(() => {
         const fetchProfile =async () => {
             try {
-                const response = await axios.get('');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/user/${user.id}');
                 setFirstName(response.first_name);
                 setLastName(response.last_name);
                 setUsername(response.username);
@@ -27,7 +29,7 @@ const PageProfile = () => {
                 console.error('Ошибка получения информации о пользователе',error);
             }
         };
-        fetchProfile();
+        if (user) fetchProfile();
     }, []);
 
     const handleFileChange = (e) => {
@@ -51,13 +53,14 @@ const PageProfile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru', { 
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/API/user/${user.id}', { 
                 first_name,
                 last_name,
                 username,
                 bio,
                 profilePicture,
             });
+            alert('Данные профиля успешно сохранены');
             console.log('Данные профиля успешно сохранены:', response.data);
         } catch (error) {
             console.log('Ошибка сохранения данных:', error);

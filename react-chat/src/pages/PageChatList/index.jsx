@@ -24,7 +24,7 @@ const PageChatList = () => {
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                const response = await axios.get('https://vkedu-fullstack-div2.ru');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/chats');
                 setChats(response.data);
             } catch (error) {
                 console.error('Ошибка при получении чатов:', error);
@@ -68,7 +68,7 @@ const PageChatList = () => {
 
     const createChat = async (chatData) => {
         try {
-            const response = await axios.post('...',chatData);
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',chatData);
             setChats((prevChats) => [...prevChats, response.data]);
             closeModal();
         } catch (error) {

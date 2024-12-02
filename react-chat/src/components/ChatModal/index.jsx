@@ -13,7 +13,13 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/users/');
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/users/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
                 setUsers(response.data);
             } catch (error) {
                 console.error(error);

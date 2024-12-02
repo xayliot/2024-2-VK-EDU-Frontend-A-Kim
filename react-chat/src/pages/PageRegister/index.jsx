@@ -9,7 +9,6 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
-    const [error, setError] = useState({});
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -26,19 +25,32 @@ const Register = () => {
         }
 
         try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/register/', formData, { 
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/register/', formData);
 
-            if (response.data.success) {
+            const body = response.data;
+
+            if (body.success) {
                 navigate('/login');
             } else {
-                setError(response.data.errors || { general: response.data.message || 'Ошибка регистрации. Попробуйте еще раз.' });
+                showErrors(body);
             }
         } catch (err) {
-            setError({ general: 'Ошибка регистрации. Попробуйте еще раз.' });
+            console.error('Ошибка при регистрации:', err);
+        }
+    };
+
+    const showErrors = (body) => {
+        if (body.username) {
+            document.getElementById('username-error').innerText = body.username.join(', ');
+        }
+        if (body.password) {
+            document.getElementById('password-error').innerText = body.password.join(', ');
+        }
+        if (body.first_name) {
+            document.getElementById('first-name-error').innerText = body.first_name.join(', ');
+        }
+        if (body.last_name) {
+            document.getElementById('last-name-error').innerText = body.last_name.join(', ');
         }
     };
 
@@ -55,9 +67,7 @@ const Register = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
-                    {error.username && error.username.map((msg, index) => (
-                        <div key={index} className="error">{msg}</div>
-                    ))}
+                    <div id="username-error" className="error"></div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Пароль</label>
@@ -68,9 +78,7 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    {error.password && error.password.map((msg, index) => (
-                        <div key={index} className="error">{msg}</div>
-                    ))}
+                    <div id="password-error" className="error"></div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="first_name">Имя</label>
@@ -81,9 +89,7 @@ const Register = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                         required
                     />
-                    {error.first_name && error.first_name.map((msg, index) => (
-                        <div key={index} className="error">{msg}</div>
-                    ))}
+                    <div id="first-name-error" className="error"></div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="last_name">Фамилия</label>
@@ -94,9 +100,7 @@ const Register = () => {
                         onChange={(e) => setLastName(e.target.value)}
                         required
                     />
-                    {error.last_name && error.last_name.map((msg, index) => (
-                        <div key={index} className="error">{msg}</div>
-                    ))}
+                    <div id="last-name-error" className="error"></div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="bio">Биография</label>
@@ -115,7 +119,6 @@ const Register = () => {
                         onChange={(e) => setAvatar(e.target.files[0])}
                     />
                 </div>
-                {error.general && <div className="error">{error.general}</div>}
                 <button type="submit">Зарегистрироваться</button>
             </form>
         </div>

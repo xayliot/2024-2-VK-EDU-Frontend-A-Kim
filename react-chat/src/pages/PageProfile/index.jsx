@@ -19,7 +19,13 @@ const PageProfile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`);
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`,{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                });
                 setFirstName(response.data.first_name);
                 setLastName(response.data.last_name);
                 setUsername(response.data.username);

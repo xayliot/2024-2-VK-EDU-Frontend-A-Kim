@@ -20,7 +20,7 @@ const PageProfile = () => {
         const fetchProfile = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`,{
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/current/`,{
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
@@ -35,6 +35,7 @@ const PageProfile = () => {
                 console.error('Ошибка получения информации о пользователе', error);
             }
         };
+        console.log('User data:', user);
         if (user) fetchProfile();
     }, [user]);
 

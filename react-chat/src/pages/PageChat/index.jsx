@@ -10,18 +10,40 @@ const PageChat = () => {
     const { chatId } = useParams(); 
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState('me'); 
+    const [currentUser, setCurrentUser] = useState(null); 
     const [companion, setCompanion] = useState('');
     const [newMessage, setNewMessage] = useState(false); 
 
     useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/user/current/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+                setCurrentUser(response.data);
+            } catch (error) {
+                console.error('Ошибка получения текущего пользователя:', error);
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
+
+    useEffect(() => {
         const fetchChat = async () => {
+            if (!currentUser) return; 
+
             try {
                 const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/chats/${chatId}`);
                 const chatData = response.data; 
-                
+
                 setChat(chatData);
-                setCompanion(chatData.participants.find(p => p.id !== currentUser) || 'Собеседник');
+                const foundCompanion = chatData.participants.find(p => p.id !== currentUser.id);
+                setCompanion(foundCompanion ? foundCompanion : 'Собеседник');
             } catch (error) {
                 console.error('Ошибка получения чата:', error);
             } finally {
@@ -33,19 +55,19 @@ const PageChat = () => {
     }, [chatId, currentUser]);
 
     const handleNewMessage = async (messageText) => {
-        if (!chat) return;
+        if (!chat || !currentUser) return;
 
         const message = {
             id: Date.now().toString(), 
             text: messageText,
             chat: chatId,
             sender: {
-                id: currentUser,
-                username: 'Username', 
-                first_name: 'FirstName', 
-                last_name: 'LastName', 
-                bio: null,
-                avatar: null,
+                id: currentUser.id,
+                username: currentUser.username, 
+                first_name: currentUser.first_name,
+                last_name: currentUser.last_name,
+                bio: currentUser.bio || null,
+                avatar: currentUser.avatar || null,
                 last_online_at: new Date().toISOString(),
                 is_online: true,
             },
@@ -70,10 +92,6 @@ const PageChat = () => {
         }
     };
 
-    const swapUser = () => {
-        setCurrentUser(prevUser => (prevUser === 'me' ? companion : 'me'));
-    };
-
     if (loading) {
         return <div>Загрузка...</div>;
     }
@@ -88,7 +106,6 @@ const PageChat = () => {
                 currentUser={currentUser} 
                 companion={companion} 
                 avatar={chat.image} 
-                onUserSwap={swapUser} 
             />
             <MessageList messages={chat.messages} newMessage={newMessage} />
             <MessageForm onSendMessage={handleNewMessage} />

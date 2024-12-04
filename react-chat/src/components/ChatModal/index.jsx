@@ -4,10 +4,9 @@ import './index.scss';
 
 const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
-    const [participant, setParticipant] = useState('');
+    const [participant, setParticipant] = useState(null);
     const [image, setImage] = useState('');
     const [users, setUsers] =useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
     const chatNameInputRef = useRef(null);
 
     useEffect(() => {
@@ -28,17 +27,6 @@ const ChatModal = ({ onClose, onCreateChat }) => {
         fetchUsers();
     }, []);
 
-    useEffect(() =>{
-        if (participant) {
-            const filtered = users.filter(user =>
-                user.username.toLowerCase().includes(participant.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else {
-            setFilteredUsers([]);
-        }
-    }, [participant, users])
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -56,15 +44,13 @@ const ChatModal = ({ onClose, onCreateChat }) => {
 
     const resetForm = () => {
         setChatName('');
-        setParticipant('');
+        setParticipant(null);
         setImage('');
         onClose();
-        setFilteredUsers('');
     };
 
     const handleUserSelect = (user) => {
-        setParticipant(user.username);
-        setFilteredUsers([]);
+        setParticipant(user);
     }
 
     useEffect (() =>{
@@ -89,24 +75,14 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <input
-                        placeholder='Username участника'
-                        type="text"
-                        id="participant"
-                        value={participant}
-                        onChange={(e) => setParticipant(e.target.value)}
-                        onFocus={() => setFilteredUsers(users)} 
-                        required
-                    />
-                    {filteredUsers.length > 0 && (
-                        <ul className="user-list">
-                            {filteredUsers.map(user => (
-                                <li key={user.id} onClick={() => handleUserSelect(user)}>
-                                    {user.username}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    <label>Выберите участника:</label>
+                    <ul className="user-list">
+                        {users.map(user => (
+                            <li key={user.id} onClick={() => handleUserSelect(user)}>
+                                {user.username}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div className="form-group">
                     <input

@@ -19,7 +19,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                         'Authorization': `Bearer ${accessToken}`,
                     }
                 });
-                setUsers(response.data);
+                setUsers(response.data.results);
             } catch (error) {
                 console.error(error);
             }

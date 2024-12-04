@@ -22,8 +22,13 @@ const Login = () => {
             if (response.data.access && response.data.refresh) {
                 localStorage.setItem('accessToken', response.data.access);
                 localStorage.setItem('refreshToken', response.data.refresh);
+                const userResponse = await axios.get('https://vkedu-fullstack-div2.ru/api/user/current/', {
+                    headers: {
+                        'Authorization': `Bearer ${response.data.access}`,
+                    },
+                });
                 
-                login(); 
+                login(userResponse.data); 
                 navigate('/'); 
             } else {
                 setError('Ошибка авторизации. Проверьте имя пользователя и пароль.');

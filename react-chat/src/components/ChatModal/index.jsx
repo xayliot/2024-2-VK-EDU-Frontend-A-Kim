@@ -6,7 +6,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
     const [participant, setParticipant] = useState(null);
     const [image, setImage] = useState('');
-    const [users, setUsers] =useState([]);
+    const [users, setUsers] = useState([]);
     const chatNameInputRef = useRef(null);
 
     useEffect(() => {
@@ -30,6 +30,11 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (!participant) {
+            alert('Пожалуйста, выберите участника.');
+            return;
+        }
+
         const newChatData = {
             id: Date.now(),
             name: chatName,
@@ -50,10 +55,10 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     };
 
     const handleUserSelect = (user) => {
-        setParticipant(user);
-    }
+        setParticipant(user); 
+    };
 
-    useEffect (() =>{
+    useEffect(() => {
         if (chatNameInputRef.current) {
             chatNameInputRef.current.focus();
         }
@@ -76,9 +81,16 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                 </div>
                 <div className="form-group">
                     <label>Выберите участника:</label>
+                    <input
+                        placeholder='Username участника'
+                        type="text"
+                        id="participants"
+                        value={participant ? participant.username : ''}
+                        readOnly 
+                    />
                     <ul className="user-list">
                         {users.map(user => (
-                            <li key={user.id} onClick={() => handleUserSelect(user)}>
+                            <li key={user.id} onClick={() => handleUserSelect(user)} style={{ cursor: 'pointer' }}>
                                 {user.username}
                             </li>
                         ))}

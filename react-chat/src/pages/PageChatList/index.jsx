@@ -14,7 +14,7 @@ const PageChatList = () => {
     const navigate = useNavigate();
     
     const handleSelectedChat = (chatId) => {
-        navigate(`/chat/${chatId}`);
+        navigate(`/chats/${chatId}`);
     };
 
     const handlePageEdit = () => {
@@ -32,7 +32,7 @@ const PageChatList = () => {
                     }
                 });
                 console.log(response.data);
-                setChats(response.data);
+                setChats(response.data.results);
             } catch (error) {
                 console.error('Ошибка при получении чатов:', error);
             }

@@ -67,11 +67,26 @@ const PageProfile = () => {
                 username,
                 bio,
                 profilePicture,
-            }, { headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-            }, 
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
             });
+    
+            const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/current/`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            setFirstName(response.data.first_name);
+            setLastName(response.data.last_name);
+            setUsername(response.data.username);
+            setBio(response.data.bio);
+            setProfilePicture(response.data.profilePicture);
+    
             alert('Данные профиля успешно сохранены');
         } catch (error) {
             console.log('Ошибка сохранения данных:', error);

@@ -14,13 +14,13 @@ const ChatItem = ({ chat }) => {
         <div className="chat-item">
             <div className="chat-img-wrap">
                 {chat?.image ? (
-                    <img className="chat-img" src={chat.image} alt={chat.name} />
+                    <img className="chat-img" src={chat.image} alt={chat.title} />
                 ) : (
                     <div className="chat-img-placeholder">Нет изображения</div>
                 )}
             </div>
             <div className="name-content">
-                <div className="name">{chat?.name || 'Без названия'}</div>
+                <div className="name">{chat?.title || 'Без названия'}</div>
                 <div className="lasttext">{truncatedMessage}</div>
             </div>
         </div>

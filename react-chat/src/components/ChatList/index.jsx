@@ -12,7 +12,7 @@ const ChatList = ({ chats }) => {
                 <div>Нет чатов</div>
             ) : (
                 chatKeys.map(chatId => (
-                    <Link to={`/chat/${chatId}`} key={chatId} className='chat-link'>
+                    <Link to={`/chats/${chatId}`} key={chatId} className='chat-link'>
                         <ChatItem  
                             chat={chats[chatId]} 
                         />

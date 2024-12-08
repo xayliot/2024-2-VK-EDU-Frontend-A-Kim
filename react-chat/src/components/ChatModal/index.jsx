@@ -1,19 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import './index.scss'; 
 
 const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
-    const [participants, setParticipants] = useState('');
+    const [participant, setParticipant] = useState(null);
     const [image, setImage] = useState('');
+    const [users, setUsers] = useState([]);
     const chatNameInputRef = useRef(null);
 
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/users/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+                setUsers(response.data.results);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchUsers();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (!participant) {
+            alert('Пожалуйста, выберите участника.');
+            return;
+        }
+
         const newChatData = {
+            id: Date.now(),
             name: chatName,
-            participants: participants.split(',').map(p => p.trim()), 
+            participants: [participant], 
             image: image,
             messages: [],
         };
@@ -24,12 +49,16 @@ const ChatModal = ({ onClose, onCreateChat }) => {
 
     const resetForm = () => {
         setChatName('');
-        setParticipants('');
+        setParticipant(null);
         setImage('');
         onClose();
     };
 
-    useEffect (() =>{
+    const handleUserSelect = (user) => {
+        setParticipant(user); 
+    };
+
+    useEffect(() => {
         if (chatNameInputRef.current) {
             chatNameInputRef.current.focus();
         }
@@ -51,14 +80,21 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                     />
                 </div>
                 <div className="form-group">
+                    <label>Выберите участника:</label>
                     <input
-                        placeholder='Участник'
+                        placeholder='Username участника'
                         type="text"
                         id="participants"
-                        value={participants}
-                        onChange={(e) => setParticipants(e.target.value)}
-                        required
+                        value={participant ? participant.username : ''}
+                        readOnly 
                     />
+                    <ul className="user-list">
+                        {users.map(user => (
+                            <li key={user.id} onClick={() => handleUserSelect(user)} style={{ cursor: 'pointer' }}>
+                                {user.username}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div className="form-group">
                     <input

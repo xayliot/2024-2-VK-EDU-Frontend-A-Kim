@@ -9,46 +9,46 @@ import './index.scss';
 
 const PageChat = () => {
     const { user } = useAuth();
-    const { chatId } = useParams(); 
+    const { chatId } = useParams();
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState(null); 
+    const [currentUser, setCurrentUser] = useState(null);
     const [companion, setCompanion] = useState('');
-    const [newMessage, setNewMessage] = useState(false); 
-   // const [page, setPage] = useState(1); 
-   // const [hasMore, setHasMore] = useState(true);
-    const pageSize = 20; 
+    const [newMessage, setNewMessage] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const pageSize = 20;
 
     useEffect(() => {
         setCurrentUser(user);
     }, [user]);
 
-
     useEffect(() => {
         const fetchChat = async () => {
-            if (!currentUser) return; 
+            if (!currentUser) return;
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/messages', {
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/messages/', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     },
                     params: {
-                        chat: chatId, 
-                        page_size: pageSize, 
-                        page: page, 
+                        chat: chatId,
+                        page_size: pageSize,
+                        page: page,
                     },
                 });
 
                 const chatData = {
                     messages: response.data.results,
-                    participants: response.data.participants, 
+                    participants: response.data.participants,
                 };
                 setChat(chatData);
                 const foundCompanion = chatData.participants.find(p => p.id !== currentUser.id);
                 setCompanion(foundCompanion ? foundCompanion : 'Собеседник');
+                setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
                 console.error('Ошибка получения чата:', error);
             } finally {
@@ -57,7 +57,13 @@ const PageChat = () => {
         };
 
         fetchChat();
-    }, [chatId, currentUser]);
+    }, [chatId, currentUser, page]);
+
+    const loadMoreMessages = () => {
+        if (hasMore) {
+            setPage(prevPage => prevPage + 1);
+        }
+    };
 
     const handleNewMessage = async (messageData) => {
         if (!chat || !currentUser) return;
@@ -71,7 +77,7 @@ const PageChat = () => {
             files: files || null,
             sender: {
                 id: currentUser.id,
-                username: currentUser.username, 
+                username: currentUser.username,
                 first_name: currentUser.first_name,
                 last_name: currentUser.last_name,
             },
@@ -98,10 +104,10 @@ const PageChat = () => {
 
             setChat(prevChat => ({
                 ...prevChat,
-                messages: [...prevChat.messages, response.data], 
+                messages: [...prevChat.messages, response.data],
             }));
             setNewMessage(true);
-            setTimeout(() => setNewMessage(false), 3000); 
+            setTimeout(() => setNewMessage(false), 3000);
         } catch (error) {
             console.error('Ошибка отправки сообщения:', error);
         }
@@ -116,13 +122,13 @@ const PageChat = () => {
     }
 
     return (
-        <div className="page-chat">
+        <div className="page-chat" onScroll={loadMoreMessages}>
             <ChatHeader 
                 currentUser={currentUser} 
                 companion={companion} 
                 avatar={chat.image} 
             />
-            <MessageList messages={chat.messages} newMessage={newMessage} />
+            <MessageList messages={chat.messages} newMessage={newMessage} loadMoreMessages={loadMoreMessages} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

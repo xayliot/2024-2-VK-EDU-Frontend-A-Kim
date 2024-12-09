@@ -2,9 +2,7 @@ import React from 'react';
 import './index.scss';
 
 const ChatItem = ({ chat }) => {
-    const lastMessage = chat?.messages && chat.messages.length > 0 
-        ? chat.messages[chat.messages.length - 1]?.text || 'Нет сообщений'
-        : 'Нет сообщений';
+    const lastMessage = chat?.last_message?.text ? chat.last_message.text : 'Нет сообщений';
 
     const truncatedMessage = lastMessage.length > 25
         ? lastMessage.substring(0, 25) + '...'
@@ -14,7 +12,7 @@ const ChatItem = ({ chat }) => {
         <div className="chat-item">
             <div className="chat-img-wrap">
                 {chat?.image ? (
-                    <img className="chat-img" src={chat.image} alt={chat.title} />
+                    <img className="chat-img" src={chat.avatar} alt={chat.title} />
                 ) : (
                     <div className="chat-img-placeholder">Нет изображения</div>
                 )}

@@ -4,6 +4,7 @@ import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
 import CreateButton from '../../components/CreateButton/index';
 import { ChatListHeader } from '../../components/Header/index';
+import axios from 'axios';
 import './index.scss';
 
 const PageChatList = () => {
@@ -13,7 +14,7 @@ const PageChatList = () => {
     const navigate = useNavigate();
     
     const handleSelectedChat = (chatId) => {
-        navigate(`/chat/${chatId}`);
+        navigate(`/chats/${chatId}`);
     };
 
     const handlePageEdit = () => {
@@ -21,10 +22,23 @@ const PageChatList = () => {
     };
 
     useEffect(() => {
-        const storedChats = localStorage.getItem('chats');
-        if (storedChats) {
-            setChats(JSON.parse(storedChats));
-        }
+        const fetchChats = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/chats', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+                console.log(response.data);
+                setChats(response.data.results);
+            } catch (error) {
+                console.error('Ошибка при получении чатов:', error);
+            }
+        };
+
+        fetchChats();
     }, []);
 
     const openModal = () => {
@@ -59,19 +73,27 @@ const PageChatList = () => {
         };
     }, [isModalOpen]);
 
-    const createChat = (chatData) => {
-        const chatId = Date.now().toString();
-        const newChat = {
-            id: chatId,
-            ...chatData,
-            messages: [],
-        };
-
-        const newChats = { ...chats, [chatId]: newChat };
-
-        localStorage.setItem('chats', JSON.stringify(newChats));
-        setChats(newChats);
-        closeModal();
+    const createChat = async (chatData) => {
+        try {
+            if (!chatData) {
+                throw new Error('Chat data is required');
+            }
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats',chatData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+            setChats((prevChats) => ({
+                ...prevChats,
+            [response.data.id]: response.data,
+        }));
+            closeModal();
+        } catch (error) {
+            console.error('Ошибка при создании чата:', error);
+        }
     };
 
     return (

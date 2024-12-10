@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatList from '../../components/ChatList/index';
 import ChatModal from '../../components/ChatModal/index';
@@ -23,7 +23,7 @@ const PageChatList = () => {
         navigate(`/Profile`);
     };
 
-    const fetchChats = async () => {
+    const fetchChats = useCallback(async () => {
         try {
             setLoading(true);
             const accessToken = localStorage.getItem('accessToken');
@@ -34,21 +34,20 @@ const PageChatList = () => {
                 },
                 params: {
                     page_size: 10,
-                    page: page,    
+                    page: page,
                 },
             });
-            console.log(response.data);
-            setChats((prevChats) => [...prevChats, ...response.data.results]);
+            setChats(response.data.results);
         } catch (error) {
             console.error('Ошибка при получении чатов:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [page]); 
 
     useEffect(() => {
         fetchChats();
-    }, [page, fetchChats]); 
+    }, [fetchChats]); 
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -94,34 +93,31 @@ const PageChatList = () => {
                     'Authorization': `Bearer ${accessToken}`,
                 }
             });
-            setChats((prevChats) => [...prevChats, response.data]); 
+            setChats((prevChats) => [...prevChats, response.data]);
             closeModal();
         } catch (error) {
             console.error('Ошибка при создании чата:', error);
         }
     };
 
-    const handleScroll = () => {
+    const handleScroll = useCallback(() => {
         if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100 && !loading) {
-            setPage((prevPage) => prevPage + 1); 
+            setPage((prevPage) => prevPage + 1);
         }
-    };
+    }, [loading]); 
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll); 
+        window.addEventListener('scroll', handleScroll);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll); 
+            window.removeEventListener('scroll', handleScroll);
         };
-    }, [loading, handleScroll]); 
+    }, [handleScroll]); 
 
     return (
         <div className="page-chat-list">
             <ChatListHeader pageEdit={handlePageEdit} />
-            <ChatList 
-                chats={chats} 
-                onSelectChat={handleSelectedChat} 
-            />
+            <ChatList chats={chats} onSelectChat={handleSelectedChat} />
             {loading && <div>Загрузка...</div>}
             <div className='create-button'>
                 <CreateButton onClick={openModal} />

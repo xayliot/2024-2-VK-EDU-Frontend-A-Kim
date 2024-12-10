@@ -29,7 +29,7 @@ const PageChat = () => {
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}`, {
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
@@ -95,7 +95,7 @@ const PageChat = () => {
                 });
             }
 
-            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/`, formData, {
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}/`, formData, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 },

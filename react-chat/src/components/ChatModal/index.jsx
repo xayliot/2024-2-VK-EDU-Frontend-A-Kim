@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import './index.scss'; 
+import './index.scss';
 
-const ChatModal = ({ onClose, onCreateChat }) => {
+const ChatModal = ({ onClose, onCreateChat, currentUser }) => {
     const [chatName, setChatName] = useState('');
-    const [participant, setParticipant] = useState(null);
+    const [selectedParticipants, setSelectedParticipants] = useState([]);
     const [image, setImage] = useState('');
     const [users, setUsers] = useState([]);
+    const [isPrivate, setIsPrivate] = useState(false);
     const chatNameInputRef = useRef(null);
 
     useEffect(() => {
@@ -30,17 +31,40 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!participant) {
-            alert('Пожалуйста, выберите участника.');
+        if (selectedParticipants.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одного участника.');
             return;
         }
 
         const newChatData = {
-            id: Date.now(),
-            name: chatName,
-            participants: [participant], 
-            image: image,
-            messages: [],
+            id: Date.now().toString(),
+            title: chatName,
+            members: selectedParticipants.map(participant => ({
+                id: participant.id,
+                username: participant.username,
+                first_name: participant.first_name,
+                last_name: participant.last_name,
+                bio: participant.bio || null,
+                avatar: participant.avatar || null,
+                last_online_at: participant.last_online_at,
+                is_online: participant.is_online,
+            })),
+            creator: {
+                id: currentUser.id,
+                username: currentUser.username,
+                first_name: currentUser.first_name,
+                last_name: currentUser.last_name,
+                bio: currentUser.bio || null,
+                avatar: currentUser.avatar || null,
+                last_online_at: currentUser.last_online_at,
+                is_online: currentUser.is_online,
+            },
+            avatar: image || null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            is_private: isPrivate,
+            last_message: null,
+            unread_messages_count: 0,
         };
 
         onCreateChat(newChatData);
@@ -49,13 +73,18 @@ const ChatModal = ({ onClose, onCreateChat }) => {
 
     const resetForm = () => {
         setChatName('');
-        setParticipant(null);
+        setSelectedParticipants([]);
         setImage('');
+        setIsPrivate(false);
         onClose();
     };
 
     const handleUserSelect = (user) => {
-        setParticipant(user); 
+        if (selectedParticipants.some(participant => participant.id === user.id)) {
+            setSelectedParticipants(selectedParticipants.filter(participant => participant.id !== user.id));
+        } else {
+            setSelectedParticipants([...selectedParticipants, user]);
+        }
     };
 
     useEffect(() => {
@@ -67,7 +96,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     return (
         <div>
             <h2>Создать новый чат</h2>
-            <form className='form-wraper' onSubmit={handleSubmit}>
+            <form className='form-wrapper' onSubmit={handleSubmit}>
                 <div className="form-group">
                     <input
                         placeholder='Название'
@@ -80,21 +109,41 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Выберите участника:</label>
-                    <input
-                        placeholder='Username участника'
-                        type="text"
-                        id="participants"
-                        value={participant ? participant.username : ''}
-                        readOnly 
-                    />
+                    <label>Выберите участников:</label>
                     <ul className="user-list">
                         {users.map(user => (
-                            <li key={user.id} onClick={() => handleUserSelect(user)} style={{ cursor: 'pointer' }}>
+                            <li 
+                                key={user.id} 
+                                onClick={() => handleUserSelect(user)} 
+                                style={{ cursor: 'pointer', backgroundColor: selectedParticipants.some(participant => participant.id === user.id) ? '#d3d3d3' : 'transparent' }}
+                            >
                                 {user.username}
                             </li>
                         ))}
                     </ul>
+                </div>
+                <div className="privacy">
+                    <label>Чат приватный:</label>
+                    <div>
+                        <label>
+                            <input 
+                                type="radio" 
+                                value="false" 
+                                checked={!isPrivate} 
+                                onChange={() => setIsPrivate(false)} 
+                            />
+                            Public
+                        </label>
+                        <label>
+                            <input 
+                                type="radio" 
+                                value="true" 
+                                checked={isPrivate} 
+                                onChange={() => setIsPrivate(true)} 
+                            />
+                            Private
+                        </label>
+                    </div>
                 </div>
                 <div className="form-group">
                     <input

@@ -24,7 +24,6 @@ const ChatHeader = ({ currentUser, companion, avatar, onUserSwap }) => {
                     <div className="username">{currentUser === 'me' ? 'Вы' : currentUser}</div>
                     <div className="last-login">Последний заход: 12:00</div>
                 </div>
-                <button id="change_user" onClick={onUserSwap}>Сменить пользователя</button>
             </div>
             <div className="header-right">
                 <button id="loupe">

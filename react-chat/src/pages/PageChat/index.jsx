@@ -3,57 +3,109 @@ import { useParams } from 'react-router-dom';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
 import { ChatHeader } from '../../components/Header/index';
+import { useAuth } from '../../AuthContext';
+import axios from 'axios';
 import './index.scss';
 
-const PageChat = ( ) => {
-    const { chatId } = useParams(); 
+const PageChat = () => {
+    const { user } = useAuth();
+    const { chatId } = useParams();
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState('me');
     const [companion, setCompanion] = useState('');
-    const [newMessage, setNewMessage] = useState(false); 
+    const [newMessage, setNewMessage] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const pageSize = 20;
+
 
     useEffect(() => {
-        const chats = getMessagesFromLocalStorage();
-        const currentChat = chats[chatId];
-        if (currentChat) {
-            setChat(currentChat);
-            setCompanion(currentChat.participants.find(p => p !== currentUser) || 'Собеседник');
-        }
-        setLoading(false);
-    }, [chatId, currentUser]);
+        const fetchChat = async () => {
+            if (!user) return;
 
-    const getMessagesFromLocalStorage = () => {
-        const storedChats = localStorage.getItem('chats');
-        return storedChats ? JSON.parse(storedChats) : {};
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}/`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                    params: {
+                        page_size: pageSize,
+                        page: page,
+                    },
+                });
+
+                const chatData = {
+                    messages: response.data.results,
+                    participants: response.data.participants,
+                };
+                setChat(chatData);
+                const foundCompanion = chatData.participants.find(p => p.id !== user.id);
+                setCompanion(foundCompanion ? foundCompanion : 'Собеседник');
+                setHasMore(response.data.results.length === pageSize); 
+            } catch (error) {
+                console.error('Ошибка получения чата:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchChat();
+    }, [chatId, user, page]);
+
+    const loadMoreMessages = () => {
+        if (hasMore) {
+            setPage(prevPage => prevPage + 1);
+        }
     };
 
-    const handleNewMessage = (messageText) => {
-        if (!chat) return;
+    const handleNewMessage = async (messageData) => {
+        if (!chat || !user) return;
+
+        const { text, voice, files } = messageData;
 
         const message = {
-            text: messageText,
-            sender: currentUser, 
-            time: new Date().toISOString(),
+            chat: chatId,
+            text: text || null,
+            voice: voice || null,
+            files: files || null,
+            sender: {
+                id: user.id,
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name,
+            },
+            created_at: new Date().toISOString(),
         };
 
-        const updatedMessages = [...chat.messages, message];
-        const updatedChat = { ...chat, messages: updatedMessages };
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const formData = new FormData();
+            formData.append('chat', message.chat);
+            if (message.text) formData.append('text', message.text);
+            if (message.voice) formData.append('voice', message.voice);
+            if (message.files) {
+                Array.from(message.files).forEach(file => {
+                    formData.append('files', file);
+                });
+            }
 
-        const updatedChats = {
-            ...getMessagesFromLocalStorage(),
-            [chatId]: updatedChat,
-        };
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}/`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                },
+            });
 
-        setChat(updatedChat);
-        localStorage.setItem('chats', JSON.stringify(updatedChats));
-
-        setNewMessage(true);
-        setTimeout(() => setNewMessage(false), 0);
-    };
-
-    const swapUser = () => {
-        setCurrentUser(prevUser => (prevUser === 'me' ? companion : 'me'));
+            setChat(prevChat => ({
+                ...prevChat,
+                messages: [...prevChat.messages, response.data],
+            }));
+            setNewMessage(true);
+            setTimeout(() => setNewMessage(false), 3000);
+        } catch (error) {
+            console.error('Ошибка отправки сообщения:', error);
+        }
     };
 
     if (loading) {
@@ -65,14 +117,13 @@ const PageChat = ( ) => {
     }
 
     return (
-        <div className="page-chat">
+        <div className="page-chat" onScroll={loadMoreMessages}>
             <ChatHeader 
-                currentUser={currentUser} 
+                currentUser={user} 
                 companion={companion} 
                 avatar={chat.image} 
-                onUserSwap={swapUser} 
             />
-            <MessageList messages={chat.messages} newMessage={newMessage} />
+            <MessageList messages={chat.messages} newMessage={newMessage} loadMoreMessages={loadMoreMessages} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

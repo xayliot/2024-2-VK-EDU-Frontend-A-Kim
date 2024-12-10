@@ -48,7 +48,7 @@ const PageChatList = () => {
 
     useEffect(() => {
         fetchChats();
-    }, [page]); 
+    }, [page, fetchChats]); 
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -113,7 +113,7 @@ const PageChatList = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll); 
         };
-    }, [loading]); 
+    }, [loading, handleScroll]); 
 
     return (
         <div className="page-chat-list">

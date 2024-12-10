@@ -29,13 +29,12 @@ const PageChat = () => {
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/messages/', {
+                const response = await axios.get('https://vkedu-fullstack-div2.ru/api/messages/${chatId}', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     },
                     params: {
-                        chat: chatId,
                         page_size: pageSize,
                         page: page,
                     },

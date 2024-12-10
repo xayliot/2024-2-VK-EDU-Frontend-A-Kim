@@ -87,7 +87,7 @@ const PageChatList = () => {
                 throw new Error('Chat data is required');
             }
             const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats', chatData, {
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/chats/', chatData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,

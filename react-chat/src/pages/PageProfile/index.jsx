@@ -30,7 +30,7 @@ const PageProfile = () => {
                 setLastName(response.data.last_name);
                 setUsername(response.data.username);
                 setBio(response.data.bio);
-                setProfilePicture(response.data.profilePicture);    
+                setProfilePicture(response.data.avatar);    
             } catch (error) {
                 console.error('Ошибка получения информации о пользователе', error);
             }
@@ -61,7 +61,7 @@ const PageProfile = () => {
     const handleSave = async () => {
         try {
             const accessToken = localStorage.getItem('accessToken');
-            await axios.post(`https://vkedu-fullstack-div2.ru/api/user/${user.id}`, {
+            const response = await axios.patch(`https://vkedu-fullstack-div2.ru/api/user/${user.id}/`, {
                 first_name,
                 last_name,
                 username,
@@ -73,19 +73,13 @@ const PageProfile = () => {
                     'Authorization': `Bearer ${accessToken}`,
                 },
             });
-    
-            const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/current/`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-    
+            console.log('Save response:', response.data);
+
             setFirstName(response.data.first_name);
             setLastName(response.data.last_name);
             setUsername(response.data.username);
             setBio(response.data.bio);
-            setProfilePicture(response.data.profilePicture);
+            setProfilePicture(response.data.avatar);
     
             alert('Данные профиля успешно сохранены');
         } catch (error) {

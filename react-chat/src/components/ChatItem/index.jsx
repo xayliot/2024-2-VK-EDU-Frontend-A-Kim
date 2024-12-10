@@ -11,7 +11,7 @@ const ChatItem = ({ chat }) => {
     return (
         <div className="chat-item">
             <div className="chat-img-wrap">
-                {chat?.image ? (
+                {chat?.avatar ? (
                     <img className="chat-img" src={chat.avatar} alt={chat.title} />
                 ) : (
                     <div className="chat-img-placeholder">Нет изображения</div>

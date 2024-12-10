@@ -16,7 +16,7 @@ const PageChatList = () => {
     const navigate = useNavigate();
 
     const handleSelectedChat = (chatId) => {
-        navigate(`/chats/${chatId}`);
+        navigate(`/chat/${chatId}/`);
     };
 
     const handlePageEdit = () => {

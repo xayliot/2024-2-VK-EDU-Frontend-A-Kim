@@ -12,20 +12,16 @@ const PageChat = () => {
     const { chatId } = useParams();
     const [chat, setChat] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState(null);
     const [companion, setCompanion] = useState('');
     const [newMessage, setNewMessage] = useState(false);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 20;
 
-    useEffect(() => {
-        setCurrentUser(user);
-    }, [user]);
 
     useEffect(() => {
         const fetchChat = async () => {
-            if (!currentUser) return;
+            if (!user) return;
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
@@ -45,7 +41,7 @@ const PageChat = () => {
                     participants: response.data.participants,
                 };
                 setChat(chatData);
-                const foundCompanion = chatData.participants.find(p => p.id !== currentUser.id);
+                const foundCompanion = chatData.participants.find(p => p.id !== user.id);
                 setCompanion(foundCompanion ? foundCompanion : 'Собеседник');
                 setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
@@ -56,7 +52,7 @@ const PageChat = () => {
         };
 
         fetchChat();
-    }, [chatId, currentUser, page]);
+    }, [chatId, user, page]);
 
     const loadMoreMessages = () => {
         if (hasMore) {
@@ -65,7 +61,7 @@ const PageChat = () => {
     };
 
     const handleNewMessage = async (messageData) => {
-        if (!chat || !currentUser) return;
+        if (!chat || !user) return;
 
         const { text, voice, files } = messageData;
 
@@ -75,10 +71,10 @@ const PageChat = () => {
             voice: voice || null,
             files: files || null,
             sender: {
-                id: currentUser.id,
-                username: currentUser.username,
-                first_name: currentUser.first_name,
-                last_name: currentUser.last_name,
+                id: user.id,
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name,
             },
             created_at: new Date().toISOString(),
         };
@@ -123,7 +119,7 @@ const PageChat = () => {
     return (
         <div className="page-chat" onScroll={loadMoreMessages}>
             <ChatHeader 
-                currentUser={currentUser} 
+                currentUser={user} 
                 companion={companion} 
                 avatar={chat.image} 
             />

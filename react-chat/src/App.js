@@ -13,7 +13,7 @@ const AppRouter = () => {
         <HashRouter>
             <Routes>
                 <Route path="/" element={isAuthenticated ? <PageChatList /> : <Navigate to="/login" />} />
-                <Route path="/chat/:chatId" element={isAuthenticated ? <PageChat /> : <Navigate to="/login" />} />
+                <Route path="/chat/:chatId/" element={isAuthenticated ? <PageChat /> : <Navigate to="/login" />} />
                 <Route path="/profile" element={isAuthenticated ? <PageProfile /> : <Navigate to="/login" />} />
                 <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
                 <Route path="/register" element={isAuthenticated ? <Navigate to="/login" /> : <Register />} />

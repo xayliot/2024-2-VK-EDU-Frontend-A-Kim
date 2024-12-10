@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './index.scss';
+import { useAuth } from '../../AuthContext.js';
 
-const ChatModal = ({ onClose, onCreateChat, currentUser }) => {
+const ChatModal = ({ onClose, onCreateChat }) => {
+    const { user } = useAuth();
     const [chatName, setChatName] = useState('');
     const [selectedParticipants, setSelectedParticipants] = useState([]);
     const [image, setImage] = useState('');
@@ -50,14 +52,14 @@ const ChatModal = ({ onClose, onCreateChat, currentUser }) => {
                 is_online: participant.is_online,
             })),
             creator: {
-                id: currentUser.id,
-                username: currentUser.username,
-                first_name: currentUser.first_name,
-                last_name: currentUser.last_name,
-                bio: currentUser.bio || null,
-                avatar: currentUser.avatar || null,
-                last_online_at: currentUser.last_online_at,
-                is_online: currentUser.is_online,
+                id:user.id,
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                bio: user.bio || null,
+                avatar: user.avatar || null,
+                last_online_at: user.last_online_at,
+                is_online: user.is_online,
             },
             avatar: image || null,
             created_at: new Date().toISOString(),

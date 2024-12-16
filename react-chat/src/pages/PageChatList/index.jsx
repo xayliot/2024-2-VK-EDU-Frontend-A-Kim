@@ -15,9 +15,6 @@ const PageChatList = () => {
     const modalRef = useRef(null);
     const navigate = useNavigate();
 
-    const handleSelectedChat = (chatId) => {
-        navigate(`/chat/${chatId}/`);
-    };
 
     const handlePageEdit = () => {
         navigate(`/Profile`);
@@ -93,7 +90,7 @@ const PageChatList = () => {
                     'Authorization': `Bearer ${accessToken}`,
                 }
             });
-            setChats((prevChats) => [...prevChats, response.data]);
+            setChats((prevChats) => [...prevChats, response.data.results]);
             closeModal();
         } catch (error) {
             console.error('Ошибка при создании чата:', error);
@@ -117,7 +114,7 @@ const PageChatList = () => {
     return (
         <div className="page-chat-list">
             <ChatListHeader pageEdit={handlePageEdit} />
-            <ChatList chats={chats} onSelectChat={handleSelectedChat} />
+            <ChatList chats={chats}/>
             {loading && <div>Загрузка...</div>}
             <div className='create-button'>
                 <CreateButton onClick={openModal} />

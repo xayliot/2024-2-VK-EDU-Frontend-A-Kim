@@ -8,7 +8,7 @@ const handleGoBack = () => {
     window.history.back()
 }
 
-const ChatHeader = ({ currentUser, companion, avatar, onUserSwap }) => {
+const ChatHeader = ({ currentUser, chatInfo, avatar }) => {
     return (
         <div className="chat-header">
             <div className="header-left">
@@ -18,11 +18,11 @@ const ChatHeader = ({ currentUser, companion, avatar, onUserSwap }) => {
             </div>
             <div className="header-center">
                 <div className="avatar">
-                    <img src={avatar} alt={companion} className="ava-img" />
+                    <img src={avatar} alt={'lol'} className="ava-img" />
                 </div>
                 <div className="user-info">
-                    <div className="username">{currentUser === 'me' ? 'Вы' : currentUser}</div>
-                    <div className="last-login">Последний заход: 12:00</div>
+                    <div className="username">{chatInfo.title}</div>
+                    <div className="last-login">{}</div> //додумать способ отрисовки времени захода собеседника
                 </div>
             </div>
             <div className="header-right">

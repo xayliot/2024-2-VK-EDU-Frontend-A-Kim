@@ -16,8 +16,8 @@ const MessageList = ({ messages, newMessage }) => {
             {messages.length === 0 ? (
                 <div>Нет сообщений</div>
             ) : (
-                messages.map((message, index) => (
-                    <Message key={index} message={message} />
+                messages.map((message) => (
+                    <Message key={messages.id} message={message} />
                 ))
             )}
             <div ref={messagesEndRef} />

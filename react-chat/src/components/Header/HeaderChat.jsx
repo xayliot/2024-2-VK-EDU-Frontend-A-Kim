@@ -22,7 +22,7 @@ const ChatHeader = ({ currentUser, chatInfo, avatar }) => {
                 </div>
                 <div className="user-info">
                     <div className="username">{chatInfo.title}</div>
-                    <div className="last-login">{}</div> //додумать способ отрисовки времени захода собеседника
+                    <div className="last-login">{}</div>
                 </div>
             </div>
             <div className="header-right">

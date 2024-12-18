@@ -25,16 +25,17 @@ const PageChat = () => {
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/messages/${chatId}/`, {
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/messages/`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     },
 
-                    // params: {
+                    params: {
                     //     page_size: pageSize,
                     //     page: page,
-                    // },
+                    chat: chatId,
+                    },
                 });
                 const chatData = response.data.results;
                 setChatMessages(chatData);

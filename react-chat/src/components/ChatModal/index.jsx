@@ -7,7 +7,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     const { user } = useAuth();
     const [chatName, setChatName] = useState('');
     const [selectedParticipants, setSelectedParticipants] = useState([]);
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
     const [users, setUsers] = useState([]);
     const [isPrivate, setIsPrivate] = useState(false);
     const chatNameInputRef = useRef(null);
@@ -20,7 +20,10 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
-                    }
+                    },
+                    params: {
+                        page_size: 100
+                    },
                 });
                 setUsers(response.data.results);
             } catch (error) {
@@ -39,34 +42,11 @@ const ChatModal = ({ onClose, onCreateChat }) => {
         }
 
         const newChatData = {
-            id: Date.now().toString(),
+            members: selectedParticipants.map(participant => (participant.id)),
             title: chatName,
-            members: selectedParticipants.map(participant => ({
-                id: participant.id,
-                username: participant.username,
-                first_name: participant.first_name,
-                last_name: participant.last_name,
-                bio: participant.bio || null,
-                avatar: participant.avatar || null,
-                last_online_at: participant.last_online_at,
-                is_online: participant.is_online,
-            })),
-            creator: {
-                id:user.id,
-                username: user.username,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                bio: user.bio || null,
-                avatar: user.avatar || null,
-                last_online_at: user.last_online_at,
-                is_online: user.is_online,
-            },
-            avatar: image || null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            avatar: image || null,  
             is_private: isPrivate,
-            last_message: null,
-            unread_messages_count: 0,
+
         };
 
         onCreateChat(newChatData);
@@ -76,7 +56,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
     const resetForm = () => {
         setChatName('');
         setSelectedParticipants([]);
-        setImage('');
+        setImage(null);
         setIsPrivate(false);
         onClose();
     };
@@ -148,12 +128,12 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                     </div>
                 </div>
                 <div className="form-group">
+                    <label htmlFor="chat-image">Выберите изображение:</label>
                     <input
-                        placeholder='Ссылка на изображение'
-                        type="text"
+                        type="file"
                         id="chat-image"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
+                        accept="image/*"
+                        onChange={(e) => setImage(e.target.files[0])}
                     />
                 </div>
                 <div className="modal-actions">

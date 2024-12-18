@@ -4,7 +4,6 @@ import './index.scss';
 import { useAuth } from '../../AuthContext.js';
 
 const ChatModal = ({ onClose, onCreateChat }) => {
-    const { user } = useAuth();
     const [chatName, setChatName] = useState('');
     const [selectedParticipants, setSelectedParticipants] = useState([]);
     const [image, setImage] = useState(null);

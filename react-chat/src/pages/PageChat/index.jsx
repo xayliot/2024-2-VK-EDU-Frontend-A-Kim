@@ -14,10 +14,10 @@ const PageChat = () => {
     const [chatInfo, setChatInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [newMessage, setNewMessage] = useState(false);
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
-    const pageSize = 20;
 
+    // const [page, setPage] = useState(1);
+    // const [hasMore, setHasMore] = useState(true);
+    // const pageSize = 20;
 
     useEffect(() => {
         const fetchChatMessages = async () => {
@@ -30,17 +30,20 @@ const PageChat = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     },
-                    params: {
-                        page_size: pageSize,
-                        page: page,
-                    },
+
+                    // params: {
+                    //     page_size: pageSize,
+                    //     page: page,
+                    // },
                 });
                 const chatData = response.data.results;
                 setChatMessages(chatData);
+                console.log(response.data);
+                console.log(chatData);
 
-                setHasMore(response.data.results.length === pageSize); 
+                // setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
-                console.error('Ошибка получения чата:', error);
+                console.error('Ошибка получения сообщений:', error);
             } finally {
                 setLoading(false);
             }
@@ -59,21 +62,23 @@ const PageChat = () => {
                 });
 
                 setChatInfo(response.data);
-
-               }   catch (error) {
-                        console.error('Ошибка получения чата:', error);
-                } 
+                console.log(response.data);
+            } catch (error) {
+                console.error('Ошибка получения чата:', error);
+            }
         };
-        fetchChatMessages();
+
         fetchChat();
+        fetchChatMessages();
 
-    }, [chatId, user, page]);
+    }, [chatId, user]); 
 
-    const loadMoreMessages = () => {
-        if (hasMore) {
-            setPage(prevPage => prevPage + 1);
-        }
-    };
+
+    // const loadMoreMessages = () => {
+    //     if (hasMore) {
+    //         setPage(prevPage => prevPage + 1);
+    //     }
+    // };
 
     const handleNewMessage = async (messageData) => {
         if (!chatMwssages || !user) return;
@@ -132,13 +137,13 @@ const PageChat = () => {
     }
 
     return (
-        <div className="page-chat" onScroll={loadMoreMessages}>
+        <div className="page-chat">
             <ChatHeader 
                 currentUser={user}
                 chatInfo={chatInfo} 
                 avatar={chatInfo.avatar} 
             />
-            <MessageList messages={chatMwssages} newMessage={newMessage} loadMoreMessages={loadMoreMessages} />
+            <MessageList messages={chatMwssages} newMessage={newMessage} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

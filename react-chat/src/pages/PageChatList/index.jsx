@@ -6,8 +6,10 @@ import CreateButton from '../../components/CreateButton/index';
 import { ChatListHeader } from '../../components/Header/index';
 import axios from 'axios';
 import './index.scss';
+import { useAuth } from '../../AuthContext';
 
 const PageChatList = () => {
+    const { logout } = useAuth();
     const [chats, setChats] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState(1);
@@ -15,15 +17,35 @@ const PageChatList = () => {
     const modalRef = useRef(null);
     const navigate = useNavigate();
 
-
     const handlePageEdit = () => {
         navigate(`/Profile`);
     };
 
-    const fetchChats = useCallback(async () => {
+    const refreshAccessToken = async (refreshToken) => {
         try {
-            setLoading(true);
-            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/auth/refresh/', {
+                refresh: refreshToken,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const { access, refresh } = response.data;
+
+            localStorage.setItem('accessToken', access);
+            localStorage.setItem('refreshToken', refresh);
+            return access;
+        } catch (error) {
+            console.error('Ошибка обновления токена:', error);
+            logout(); 
+            navigate('/login'); 
+        }
+    };
+
+    const fetchChats = useCallback(async () => {
+        setLoading(true);
+        const accessToken = localStorage.getItem('accessToken');
+        try {
             const response = await axios.get('https://vkedu-fullstack-div2.ru/api/chats', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,15 +58,23 @@ const PageChatList = () => {
             });
             setChats(response.data.results);
         } catch (error) {
-            console.error('Ошибка при получении чатов:', error);
+            if (error.response && error.response.status === 401) {
+                const refreshToken = localStorage.getItem('refreshToken');
+                const newAccessToken = await refreshAccessToken(refreshToken);
+                if (newAccessToken) {
+                    fetchChats();
+                }
+            } else {
+                console.error('Ошибка при получении чатов:', error);
+            }
         } finally {
             setLoading(false);
         }
-    }, [page]); 
+    }, [page, refreshAccessToken]);
 
     useEffect(() => {
         fetchChats();
-    }, [fetchChats]); 
+    }, [fetchChats]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -101,7 +131,7 @@ const PageChatList = () => {
         if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100 && !loading) {
             setPage((prevPage) => prevPage + 1);
         }
-    }, [loading]); 
+    }, [loading]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -109,17 +139,16 @@ const PageChatList = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleScroll]); 
+    }, [handleScroll]);
 
     return (
         <div className="page-chat-list">
             <ChatListHeader pageEdit={handlePageEdit} />
-            <ChatList chats={chats}/>
+            <ChatList chats={chats} />
             {loading && <div>Загрузка...</div>}
             <div className='create-button'>
                 <CreateButton onClick={openModal} />
             </div>
-            
             {isModalOpen && (
                 <div className="chat-modal-overlay" onClick={(e) => {
                     if (modalRef.current && !modalRef.current.contains(e.target)) {

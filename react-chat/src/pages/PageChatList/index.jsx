@@ -21,28 +21,30 @@ const PageChatList = () => {
         navigate(`/Profile`);
     };
 
-    const refreshAccessToken = async (refreshToken) => {
-        try {
-            const response = await axios.post('https://vkedu-fullstack-div2.ru/api/auth/refresh/', {
-                refresh: refreshToken,
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const { access, refresh } = response.data;
-
-            localStorage.setItem('accessToken', access);
-            localStorage.setItem('refreshToken', refresh);
-            return access;
-        } catch (error) {
-            console.error('Ошибка обновления токена:', error);
-            logout(); 
-            navigate('/login'); 
-        }
-    };
+    
 
     const fetchChats = useCallback(async () => {
+
+        const refreshAccessToken = async (refreshToken) => {
+            try {
+                const response = await axios.post('https://vkedu-fullstack-div2.ru/api/auth/refresh/', {
+                    refresh: refreshToken,
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const { access, refresh } = response.data;
+    
+                localStorage.setItem('accessToken', access);
+                localStorage.setItem('refreshToken', refresh);
+                return access;
+            } catch (error) {
+                console.error('Ошибка обновления токена:', error);
+                logout(); 
+                navigate('/login'); 
+            }
+        };
         setLoading(true);
         const accessToken = localStorage.getItem('accessToken');
         try {
@@ -70,7 +72,7 @@ const PageChatList = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, refreshAccessToken]);
+    }, [page,logout,navigate]);
 
     useEffect(() => {
         fetchChats();

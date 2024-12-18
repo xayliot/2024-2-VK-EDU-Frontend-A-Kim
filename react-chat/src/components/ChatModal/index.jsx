@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './index.scss';
-import { useAuth } from '../../AuthContext.js';
+
 
 const ChatModal = ({ onClose, onCreateChat }) => {
     const [chatName, setChatName] = useState('');
@@ -21,7 +21,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                         'Authorization': `Bearer ${accessToken}`,
                     },
                     params: {
-                        page_size: 100
+                        page_size: 1000
                     },
                 });
                 setUsers(response.data.results);

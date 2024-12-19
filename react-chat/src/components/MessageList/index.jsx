@@ -17,7 +17,7 @@ const MessageList = ({ messages, newMessage }) => {
                 <div>Нет сообщений</div>
             ) : (
                 messages.slice().reverse().map((message) =>  (
-                    <Message key={messages.id} message={message} />
+                    <Message key={message.id} message={message} />
                 ))
             )}
             <div ref={messagesEndRef} />

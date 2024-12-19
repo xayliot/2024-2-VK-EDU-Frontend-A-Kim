@@ -113,8 +113,9 @@ const PageChat = () => {
             });
             console.log('Новое сообщение:', response.data);
             setChatMessages(prevChat => [
-                ...prevChat,
                 response.data,
+                ...prevChat,
+                
             ]);
             setNewMessage(true);
             setTimeout(() => setNewMessage(false), 3000);

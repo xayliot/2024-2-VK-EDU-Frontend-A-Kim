@@ -1,0 +1,10 @@
+{
+    "port": "9000",
+    "api_key": "my_centrifugo_api_key",
+    "token_hmac_secret_key": "my_centrifugo_token_hmac_secret_key",
+    "allow_publish_for_client": false,
+    "allow_publish_for_subscriber": false,
+    "allowed_origins": [
+        "*"
+    ]
+  }

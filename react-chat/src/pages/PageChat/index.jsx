@@ -47,8 +47,10 @@ const PageChat = () => {
                 // setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
                 console.error('Ошибка получения сообщений:', error);
+                if (error.response && error.response.status === 401) {
                 logout(); 
-                navigate('/login'); 
+                navigate('/login');
+            } 
             } finally {
                 setLoading(false);
             }
@@ -109,10 +111,10 @@ const PageChat = () => {
                     'Authorization': `Bearer ${accessToken}`
                 },
             });
-
+            console.log('Новое сообщение:', response.data);
             setChatMessages(prevChat => [
                 ...prevChat,
-                response.data.results,
+                response.data,
             ]);
             setNewMessage(true);
             setTimeout(() => setNewMessage(false), 3000);

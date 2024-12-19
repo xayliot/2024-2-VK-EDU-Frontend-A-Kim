@@ -16,7 +16,7 @@ const MessageList = ({ messages, newMessage }) => {
             {messages.length === 0 ? (
                 <div>Нет сообщений</div>
             ) : (
-                messages.map((message) => (
+                messages.slice().reverse().map((message) =>  (
                     <Message key={messages.id} message={message} />
                 ))
             )}

@@ -9,7 +9,7 @@ import './index.scss';
 import { useAuth } from '../../AuthContext';
 
 const PageChatList = () => {
-    const { logout } = useAuth();
+    const { logout, login } = useAuth();
     const [chats, setChats] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState(1);
@@ -65,6 +65,8 @@ const PageChatList = () => {
                 const newAccessToken = await refreshAccessToken(refreshToken);
                 if (newAccessToken) {
                     fetchChats();
+                    const user = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/current/`);
+                    login(user);
                 }
             } else {
                 console.error('Ошибка при получении чатов:', error);
@@ -72,7 +74,7 @@ const PageChatList = () => {
         } finally {
             setLoading(false);
         }
-    }, [page,logout,navigate]);
+    }, [page,logout,navigate, login]);
 
     useEffect(() => {
         fetchChats();

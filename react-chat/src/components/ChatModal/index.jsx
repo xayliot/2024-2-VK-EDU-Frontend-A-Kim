@@ -21,7 +21,7 @@ const ChatModal = ({ onClose, onCreateChat }) => {
                         'Authorization': `Bearer ${accessToken}`,
                     },
                     params: {
-                        page_size: 1000
+                        page_size: 30 
                     },
                 });
                 setUsers(response.data.results);

@@ -6,14 +6,16 @@ import { ChatHeader } from '../../components/Header/index';
 import { useAuth } from '../../AuthContext';
 import axios from 'axios';
 import './index.scss';
+import { useNavigate } from 'react-router-dom';
 
 const PageChat = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     const { chatId } = useParams();
     const [chatMessages, setChatMessages] = useState(null);
     const [chatInfo, setChatInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [newMessage, setNewMessage] = useState(false);
+    const navigate = useNavigate();
 
     // const [page, setPage] = useState(1);
     // const [hasMore, setHasMore] = useState(true);
@@ -45,6 +47,8 @@ const PageChat = () => {
                 // setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
                 console.error('Ошибка получения сообщений:', error);
+                logout(); 
+                navigate('/login'); 
             } finally {
                 setLoading(false);
             }
@@ -72,7 +76,7 @@ const PageChat = () => {
         fetchChat();
         fetchChatMessages();
 
-    }, [chatId, user]); 
+    }, [chatId, user, logout, navigate]); 
 
 
     // const loadMoreMessages = () => {
@@ -85,12 +89,16 @@ const PageChat = () => {
         if (!chatMessages || !user) return;
 
         const { text, voice, files } = messageData;
-
+        
+        if (!text && !voice && (!files || files.length === 0)) {
+            console.error('Необходимо ввести хотя бы одно сообщение или прикрепить файл.');
+            return;
+        }
         const message = {
             chat: chatId,
-            text: text || null,
-            voice: voice || null,
-            files: files || null,
+            ...(text && { text }), 
+            ...(voice && { voice }),
+            ...(files && files.length > 0 && { files }),
         };
 
         try {

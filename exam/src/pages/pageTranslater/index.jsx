@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
@@ -13,14 +13,14 @@ const PageTranslater = () => {
   const navigate = useNavigate();
 
   const { sourceLanguage, targetLanguage, text, translation } = useSelector(state => state);
-
-  const translator = new Translator('****');
+  const translatorRef = useRef(new Translator('****'));
+ 
 
   useEffect(() => {
     const translateText = async () => {
       if (text) {
         try {
-          const response = await translator.translate(text, targetLanguage, sourceLanguage);
+          const response = await translatorRef.current.translate(text, targetLanguage, sourceLanguage);
           dispatch({ type: 'SET_TRANSLATION', payload: response.translatedText });
         } catch (error) {
           console.error('Error fetching translation:', error);

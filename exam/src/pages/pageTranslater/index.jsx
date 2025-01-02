@@ -13,7 +13,7 @@ const PageTranslater = () => {
   const navigate = useNavigate();
 
   const { sourceLanguage, targetLanguage, text, translation } = useSelector(state => state);
-  const translatorRef = useRef(new Translator('****'));
+  const translatorRef = useRef(new Translator());
  
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const PageTranslater = () => {
 
       <div className="language-selector">
         <div className="source-language">
-          <button className={`language-button ${sourceLanguage === 'auto' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('auto', true)}>Auto Detect</button>
+          <button className={`language-button ${sourceLanguage === 'Autodetect' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('Autodetect', true)}>Auto Detect</button>
           <button className={`language-button ${sourceLanguage === 'de' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('de', true)}>German</button>
           <button className={`language-button ${sourceLanguage === 'en' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('en', true)}>English</button>
           <button className={`language-button ${sourceLanguage === 'es' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('es', true)}>Spanish</button>
@@ -109,13 +109,6 @@ const PageTranslater = () => {
           <button className={`language-button ${targetLanguage === 'de' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('de', false)}>German</button>
           <button className={`language-button ${targetLanguage === 'en' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('en', false)}>English</button>
           <button className={`language-button ${targetLanguage === 'es' ? 'selected' : ''}`} onClick={() => handleLanguageSelect('es', false)}>Spanish</button>
-          <select value={targetLanguage} onChange={(e) => handleLanguageSelect(e.target.value, false)}>
-            {Object.entries(languages).map(([code, name]) => (
-              <option key={code} value={code}>
-                {name}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 

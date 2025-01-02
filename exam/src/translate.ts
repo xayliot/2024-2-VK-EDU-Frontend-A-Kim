@@ -6,27 +6,17 @@ interface TranslationResponse {
 }
 
 class Translator {
-    private apiKey: string;
-    private apiUrl: string;
-
-    constructor(apiKey: string) {
-        this.apiKey = apiKey;
-        this.apiUrl = '';
-    }
 
     public async translate(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResponse> {
         try {
             const langpair = sourceLanguage 
                 ? `${sourceLanguage}|${targetLanguage}` 
                 : `Autodetect|${targetLanguage}`;
-    
-            const response = await axios.post(this.apiUrl, {
-                q: text,
-                langpair: langpair,
-                key: this.apiKey,
-            });
-    
-            const data = response.data.data.translations[0];
+            
+            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langpair}`;
+            const response = await axios.get(apiUrl);
+            
+            const data = response.data.responseData;
             return {
                 translatedText: data.translatedText,
                 detectedSourceLanguage: data.detectedSourceLanguage,

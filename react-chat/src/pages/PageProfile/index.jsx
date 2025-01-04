@@ -3,35 +3,52 @@ import ProfilePicture from '../../components/ProfilePicture/index';
 import { ProfileInput, ProfileInput1 } from '../../components/ProfileInput';
 import BioInput from '../../components/BioInput';
 import ProfileHeader from '../../components/Header/HeaderProfile';
+import axios from 'axios';
+import { useAuth } from '../../AuthContext.js';
 import './index.scss';
 
 const PageProfile = () => {
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
+    const { user } = useAuth();
+    const [first_name, setFirstName] = useState('');
+    const [last_name, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [isUsernameValid, setIsUsernameValid] = useState(true);
 
     useEffect(() => {
-        const storedProfile = JSON.parse(localStorage.getItem('profile'));
-        if (storedProfile) {
-            setName(storedProfile.name || '');
-            setSurname(storedProfile.surname || '');
-            setUsername(storedProfile.username || '');
-            setBio(storedProfile.bio || '');
-            setProfilePicture(storedProfile.profilePicture || null);
-        }
-    }, []);
+        const fetchProfile = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get(`https://vkedu-fullstack-div2.ru/api/user/current/`,{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                });
+                setFirstName(response.data.first_name);
+                setLastName(response.data.last_name);
+                setUsername(response.data.username);
+                setBio(response.data.bio);
+                setProfilePicture(response.data.avatar);    
+            } catch (error) {
+                console.error('Ошибка получения информации о пользователе', error);
+            }
+        };
+        console.log('User data:', user);
+        if (user) fetchProfile();
+    }, [user]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if (file && file.type.startsWith('image/')) { 
             const reader = new FileReader();
             reader.onloadend = () => {
                 setProfilePicture(reader.result);
             };
             reader.readAsDataURL(file);
+        } else {
+            alert('Пожалуйста, выберите изображение.');
         }
     };
 
@@ -41,15 +58,34 @@ const PageProfile = () => {
         setIsUsernameValid(value.length >= 5);
     };
 
-    const handleSave = () => {
-        const profileData = {
-            name,
-            surname,
-            username,
-            bio,
-            profilePicture,
-        };
-        localStorage.setItem('profile', JSON.stringify(profileData));
+    const handleSave = async () => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.patch(`https://vkedu-fullstack-div2.ru/api/user/${user.id}/`, {
+                first_name,
+                last_name,
+                username,
+                bio,
+                profilePicture,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+            console.log('Save response:', response.data);
+
+            setFirstName(response.data.first_name);
+            setLastName(response.data.last_name);
+            setUsername(response.data.username);
+            setBio(response.data.bio);
+            setProfilePicture(response.data.avatar);
+    
+            alert('Данные профиля успешно сохранены');
+        } catch (error) {
+            console.log('Ошибка сохранения данных:', error);
+            alert('Ошибка сохранения данных');
+        }
     };
 
     return (
@@ -60,11 +96,11 @@ const PageProfile = () => {
                 <div className="profile-info">
                     <ProfileInput1 
                         label={'Name'}
-                        label1={'Surname'}
-                        value={name}
-                        value1={surname} 
-                        onChangeName={(e) => setName(e.target.value)} 
-                        onChangeSurname={(e) => setSurname(e.target.value)} 
+                        label1={'Last name'}
+                        value={first_name}
+                        value1={last_name} 
+                        onChangeName={(e) => setFirstName(e.target.value)} 
+                        onChangeSurname={(e) => setLastName(e.target.value)} 
                     />
                     <ProfileInput
                         label={'Username'} 

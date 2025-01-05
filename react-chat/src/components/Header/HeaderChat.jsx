@@ -8,7 +8,7 @@ const handleGoBack = () => {
     window.history.back()
 }
 
-const ChatHeader = ({ currentUser, chatInfo, avatar }) => {
+const ChatHeader = ({  chatInfo, avatar }) => {
     return (
         <div className="chat-header">
             <div className="header-left">

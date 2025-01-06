@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './index.scss'
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -10,6 +11,10 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     
+    const handleRegister = () => {
+        navigate(`/register`);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -44,9 +49,8 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <h2>Авторизация</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
+            <form className='form-group' onSubmit={handleSubmit}>
+                <div className="form-element">
                     <label htmlFor="username">Имя пользователя</label>
                     <input
                         type="text"
@@ -56,7 +60,7 @@ const Login = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-element">
                     <label htmlFor="password">Пароль</label>
                     <input
                         type="password"
@@ -67,7 +71,8 @@ const Login = () => {
                     />
                 </div>
                 {error && <div className="error">{error}</div>}
-                <button type="submit">Войти</button>
+                <button className='form-button' type="submit">Войти</button>
+                <button className='form-button' type="button" onClick={handleRegister}>Зарегистрироваться</button>
             </form>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './index.scss'; 
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
-    const [errors, setErrors] = useState({}); 
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -33,7 +34,7 @@ const Register = () => {
             if (body.success) {
                 navigate('/login');
             } else {
-                setErrors(body); 
+                setErrors(body);
             }
         } catch (err) {
             console.error('Ошибка при регистрации:', err);
@@ -45,9 +46,9 @@ const Register = () => {
 
     return (
         <div className="register-container">
-            <h2>Регистрация</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
+            <form onSubmit={handleSubmit} className="form-group">
+                <h2>Регистрация</h2>
+                <div>
                     <label htmlFor="username">Имя пользователя</label>
                     <input
                         type="text"
@@ -58,7 +59,7 @@ const Register = () => {
                     />
                     {errors.username && <div className="error">{errors.username.join(', ')}</div>}
                 </div>
-                <div className="form-group">
+                <div>
                     <label htmlFor="password">Пароль</label>
                     <input
                         type="password"
@@ -69,7 +70,7 @@ const Register = () => {
                     />
                     {errors.password && <div className="error">{errors.password.join(', ')}</div>}
                 </div>
-                <div className="form-group">
+                <div>
                     <label htmlFor="first_name">Имя</label>
                     <input
                         type="text"
@@ -80,7 +81,7 @@ const Register = () => {
                     />
                     {errors.first_name && <div className="error">{errors.first_name.join(', ')}</div>}
                 </div>
-                <div className="form-group">
+                <div>
                     <label htmlFor="last_name">Фамилия</label>
                     <input
                         type="text"
@@ -91,7 +92,7 @@ const Register = () => {
                     />
                     {errors.last_name && <div className="error">{errors.last_name.join(', ')}</div>}
                 </div>
-                <div className="form-group">
+                <div>
                     <label htmlFor="bio">Биография</label>
                     <textarea
                         id="bio"
@@ -99,7 +100,7 @@ const Register = () => {
                         onChange={(e) => setBio(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                <div>
                     <label htmlFor="avatar">Аватар</label>
                     <input
                         type="file"

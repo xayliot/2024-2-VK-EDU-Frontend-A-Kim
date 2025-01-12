@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
@@ -7,21 +7,23 @@ import { useAuth } from '../../AuthContext';
 import axios from 'axios';
 import './index.scss';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMessages, addMessage, setChatInfo, setLoading } from '../../store/chatSlice';
 
 const PageChat = () => {
     const { user, logout } = useAuth();
     const { chatId } = useParams();
-    const [chatMessages, setChatMessages] = useState(null);
-    const [chatInfo, setChatInfo] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [newMessage, setNewMessage] = useState(false);
+    const dispatch = useDispatch();
+    const { messages, chatInfo, loading } = useSelector(state => state.chat);
     const navigate = useNavigate();
 
-     const pageSize = 100;
+    const pageSize = 100;
 
     useEffect(() => {
         const fetchChatMessages = async () => {
             if (!user) return;
+
+            dispatch(setLoading(true));
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
@@ -30,25 +32,20 @@ const PageChat = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
                     },
-
                     params: {
-                         page_size: pageSize,
+                        page_size: pageSize,
                         chat: chatId,
                     },
                 });
-                const chatData = response.data.results;
-                setChatMessages(chatData);
-                console.log(response.data);
-                console.log(chatData);
-
+                dispatch(setMessages(response.data.results));
             } catch (error) {
                 console.error('Ошибка получения сообщений:', error);
                 if (error.response && error.response.status === 401) {
-                logout(); 
-                navigate('/login');
-            } 
+                    logout(); 
+                    navigate('/login');
+                }
             } finally {
-                setLoading(false);
+                dispatch(setLoading(false));
             }
         };
 
@@ -63,9 +60,7 @@ const PageChat = () => {
                         'Authorization': `Bearer ${accessToken}`,
                     }
                 });
-
-                setChatInfo(response.data);
-                console.log(response.data);
+                dispatch(setChatInfo(response.data));
             } catch (error) {
                 console.error('Ошибка получения чата:', error);
             }
@@ -73,20 +68,17 @@ const PageChat = () => {
 
         fetchChat();
         fetchChatMessages();
-
-    }, [chatId, user, logout, navigate]); 
-
+    }, [chatId, user, logout, navigate, dispatch]);
 
     const handleNewMessage = async (messageData) => {
-        if (!chatMessages || !user) return;
-    
+        if (!user) return;
+
         const { text, voice, files } = messageData;
-        console.log(messageData);
         if (!text && !voice && (!files || files.length === 0)) {
             console.error('Необходимо ввести хотя бы одно сообщение или прикрепить файл.');
             return;
         }
-    
+
         const formData = new FormData();
         formData.append('chat', chatId); 
         if (text) {
@@ -100,7 +92,7 @@ const PageChat = () => {
                 formData.append('files', file);
             });
         }
-    
+
         try {
             const accessToken = localStorage.getItem('accessToken');
             const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/`, formData, {
@@ -108,13 +100,7 @@ const PageChat = () => {
                     'Authorization': `Bearer ${accessToken}`
                 },
             });
-            console.log('Новое сообщение:', response.data);
-            setChatMessages(prevChat => [
-                response.data,
-                ...prevChat,
-            ]);
-            setNewMessage(true);
-            setTimeout(() => setNewMessage(false), 3000);
+            dispatch(addMessage(response.data));
         } catch (error) {
             console.error('Ошибка отправки сообщения:', error);
         }
@@ -124,7 +110,7 @@ const PageChat = () => {
         return <div>Загрузка...</div>;
     }
 
-    if (!chatMessages) {
+    if (!messages) {
         return <div>Чат не найден.</div>;
     }
 
@@ -135,7 +121,7 @@ const PageChat = () => {
                 chatInfo={chatInfo} 
                 avatar={chatInfo?.avatar} 
             />
-            <MessageList messages={chatMessages} newMessage={newMessage} />
+            <MessageList messages={messages} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );

@@ -7,7 +7,7 @@ const ChatListHeader = ({pageEdit }) => {
     return (
         <div className="chatlist-header">
             <div className="header-left">
-                <button id='vert' onClick={pageEdit}>
+                <button id='vert' onClick={pageEdit} aria-label="More options">
                     <MoreVertIcon /> 
                 </button>
             </div>
@@ -15,7 +15,7 @@ const ChatListHeader = ({pageEdit }) => {
                     <div className="title">{'Messenger'}</div> 
             </div>
             <div className="header-right">
-                <button id='loupe'>
+                <button id='loupe' aria-label="Search">
                     <SearchIcon /> 
                 </button>
             </div>

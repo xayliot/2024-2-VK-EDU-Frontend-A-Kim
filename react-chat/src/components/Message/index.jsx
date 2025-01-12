@@ -1,12 +1,11 @@
 import React from 'react';
 import './index.scss';
 import { useAuth } from '../../AuthContext';
+import LazyImage from '../LazyImage';
 
 const Message = ({ message }) => {
     const { user } = useAuth();
 
-    console.log(message);
-    
     const renderContent = () => {
         if (message.text) {
             return (
@@ -18,11 +17,15 @@ const Message = ({ message }) => {
             return message.files.map((file, index) => {
                 const imageUrl = file.item; 
                 return (
-                    <img key={index} src={imageUrl} alt={`message-file-${index}`} className="message-image" />
+                    <LazyImage 
+                        key={index} 
+                        src={imageUrl} 
+                        alt={`message-file-${index}`}
+                        className="message-image" 
+                    />
                 );
             });
         }
-
 
         if (message.voice) {
             return (

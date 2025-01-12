@@ -17,9 +17,9 @@ const PageChatList = () => {
     const modalRef = useRef(null);
     const navigate = useNavigate();
 
-    const handlePageEdit = () => {
+    const handlePageEdit = useCallback(() => {
         navigate(`/Profile`);
-    };
+    }, [navigate]);
 
     
 

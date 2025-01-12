@@ -17,8 +17,6 @@ const PageChat = () => {
     const [newMessage, setNewMessage] = useState(false);
     const navigate = useNavigate();
 
-    // const [page, setPage] = useState(1);
-    // const [hasMore, setHasMore] = useState(true);
      const pageSize = 100;
 
     useEffect(() => {
@@ -35,7 +33,6 @@ const PageChat = () => {
 
                     params: {
                          page_size: pageSize,
-                    //     page: page,
                         chat: chatId,
                     },
                 });
@@ -44,7 +41,6 @@ const PageChat = () => {
                 console.log(response.data);
                 console.log(chatData);
 
-                // setHasMore(response.data.results.length === pageSize); 
             } catch (error) {
                 console.error('Ошибка получения сообщений:', error);
                 if (error.response && error.response.status === 401) {
@@ -81,33 +77,34 @@ const PageChat = () => {
     }, [chatId, user, logout, navigate]); 
 
 
-    // const loadMoreMessages = () => {
-    //     if (hasMore) {
-    //         setPage(prevPage => prevPage + 1);
-    //     }
-    // };
-
     const handleNewMessage = async (messageData) => {
         if (!chatMessages || !user) return;
-
+    
         const { text, voice, files } = messageData;
-        
+        console.log(messageData);
         if (!text && !voice && (!files || files.length === 0)) {
             console.error('Необходимо ввести хотя бы одно сообщение или прикрепить файл.');
             return;
         }
-        const message = {
-            chat: chatId,
-            ...(text && { text }), 
-            ...(voice && { voice }),
-            ...(files && files.length > 0 && { files }),
-        };
-
+    
+        const formData = new FormData();
+        formData.append('chat', chatId); 
+        if (text) {
+            formData.append('text', text);
+        }
+        if (voice) {
+            formData.append('voice', voice);
+        }
+        if (files && files.length > 0) {
+            files.forEach(file => {
+                formData.append('files', file);
+            });
+        }
+    
         try {
             const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/`, message, {
+            const response = await axios.post(`https://vkedu-fullstack-div2.ru/api/messages/`, formData, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
                 },
             });
@@ -115,7 +112,6 @@ const PageChat = () => {
             setChatMessages(prevChat => [
                 response.data,
                 ...prevChat,
-                
             ]);
             setNewMessage(true);
             setTimeout(() => setNewMessage(false), 3000);

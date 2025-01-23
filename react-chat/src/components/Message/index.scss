@@ -3,6 +3,7 @@
     inset-inline-end: 0;
     padding: 2px;
     position: absolute;
+    font-size: 14px;
 }
 
 .message {
@@ -44,10 +45,11 @@
     visibility: hidden;
 }
 
-.timestamp {
-    font-size: 14px;
+.message-image {
+    max-width: 100%;
+    height: auto;   
+    flex-shrink: 0; 
 }
-
 
 @keyframes bounceIn {
     0% {

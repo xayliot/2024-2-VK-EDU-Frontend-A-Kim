@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import SendIcon from '@mui/icons-material/Send';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 import './index.scss';
 
 const MessageForm = ({ onSendMessage }) => {
@@ -13,7 +15,12 @@ const MessageForm = ({ onSendMessage }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (messageText.trim() || files.length > 0) {
-            onSendMessage({ text: messageText, voice: null, files });
+            const messageData = {
+                text: messageText.trim() || null,
+                voice: null,
+                files
+            };
+            onSendMessage(messageData);
             setMessageText('');
             setFiles([]);
         }
@@ -45,6 +52,7 @@ const MessageForm = ({ onSendMessage }) => {
 
     const handleDragOver = (event) => {
         event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
     };
 
     const startRecording = async () => {
@@ -119,11 +127,11 @@ const MessageForm = ({ onSendMessage }) => {
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder="Введите сообщение"
-                    required
                 />
                 <button type="button" onClick={() => setShowActions(!showActions)} id='action-button'>
-                    <SendIcon />
+                    <AttachFileIcon />
                 </button>
+                <button type="submit" id='send'><SendIcon/></button>
                 <input
                     type="file"
                     id="imageUpload"
@@ -132,7 +140,7 @@ const MessageForm = ({ onSendMessage }) => {
                     style={{ display: 'none' }} 
                 />
                 {isRecording ? (
-                    <button type="button" onClick={stopRecording}>Остановить запись</button>
+                    <button type="button" onClick={stopRecording}><StopCircleIcon/></button>
                 ) : (
                     <button type="button" onClick={handleSendVoiceMessage} disabled={!audioBlob}>
                         Отправить голосовое сообщение
@@ -143,7 +151,7 @@ const MessageForm = ({ onSendMessage }) => {
                 <div className="action-menu">
                     <button onClick={() => handleActionSelect('location')}>Отправить геолокацию</button>
                     <button onClick={() => handleActionSelect('image')}>Отправить картинку</button>
-                    <button onClick={() => handleActionSelect('voice')}>Записать голосовое сообщение</button>
+                    <button onClick={() => handleActionSelect('voice')}>Отправить голосовое</button>
                 </div>
             )}
             {files.length > 0 && (

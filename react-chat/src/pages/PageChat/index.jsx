@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState  } from 'react';
 import { useParams } from 'react-router-dom';
 import MessageList from '../../components/MessageList/index';
 import MessageForm from '../../components/MessageForm/index';
@@ -16,6 +16,8 @@ const PageChat = () => {
     const dispatch = useDispatch();
     const { messages, chatInfo, loading } = useSelector(state => state.chat);
     const navigate = useNavigate();
+    const [newMessage, setNewMessage] = useState(false);
+    const isFirstRender = useRef(true);
 
     const pageSize = 100;
 
@@ -99,12 +101,26 @@ const PageChat = () => {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 },
-            });
-            dispatch(addMessage(response.data));
+            }); 
+            if (response.data) {
+                dispatch(addMessage(response.data));
+                setNewMessage(true);
+                setTimeout(() => setNewMessage(false), 3000);
+            }
         } catch (error) {
             console.error('Ошибка отправки сообщения:', error);
         }
     };
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            if (isFirstRender.current) {
+                isFirstRender.current = false;
+            } else if (newMessage) {
+
+            }
+        }
+    }, [messages, newMessage]);
 
     if (loading) {
         return <div>Загрузка...</div>;
@@ -121,7 +137,7 @@ const PageChat = () => {
                 chatInfo={chatInfo} 
                 avatar={chatInfo?.avatar} 
             />
-            <MessageList messages={messages} />
+            <MessageList messages={messages} newMessage={newMessage} />
             <MessageForm onSendMessage={handleNewMessage} />
         </div>
     );
